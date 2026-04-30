@@ -2310,9 +2310,15 @@ input[type="file"] { display: none; }
   transition: transform 0.3s ease;
 }
 
-.whatsapp-float:hover { transform: scale(1.1); }
 
+.whatsapp-float:hover {
+  transform: scale(1.1);
+}
 
+.whatsapp-float i {
+  color: white;
+  font-size: 24px;
+}
 /* ══════════════════════════════════════════════
    CONVERGENCE SECTION
    (commented out in HTML but preserved for future use)
