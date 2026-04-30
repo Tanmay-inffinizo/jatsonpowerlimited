@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>JATSON — Turnkey Electrical Systems</title>
+
+  <link rel="stylesheet" href="css/stye.css">
+  <link rel="stylesheet" href="css/style-2.css">
+<link rel="stylesheet" href="css/global-industrial.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"/>
+
+  <style>
+    /* ═══════════════════════════════════════
+       CONTACT PAGE — scoped styles only
+       All tokens, nav, footer inherited from stye.css
+    ═══════════════════════════════════════ */
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       HEADER — injected by js/main.js
+  ═══════════════════════════════════════ -->
+  <div id="header"></div>
+
+  <!-- ═══════════════════════════════════════
+       PAGE HERO
+  ═══════════════════════════════════════ -->
+  <div class="page-hero">
+    <div class="container-fluid px-4 px-md-5">
+      <div class="page-hero-eyebrow fade-up">
+        <span class="eyebrow-line"></span>
+        <span>Get In Touch</span>
+      </div>
+      <h1 class="fade-up" style="transition-delay:0.08s">
+        LET'S<br><span>CONNECT.</span>
+      </h1>
+      <p class="page-hero-sub fade-up" style="transition-delay:0.16s">
+        To talk to our professionals regarding projects, estimates, or more — get in touch with us.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       MAIN — FORM + INFO
+  ═══════════════════════════════════════ -->
+  <div class="page-main">
+
+    <!-- LEFT: FORM -->
+    <div class="page-form-panel">
+      <p class="form-section-label">Email Us</p>
+      <h2>Send a<br>Message</h2>
+      <p class="form-note">Your email address will not be published. Required fields are marked <span>*</span></p>
+
+      <form id="contactForm" novalidate>
+
+        <div class="field-grid">
+          <div class="field-row">
+            <label>Your Name <span>*</span></label>
+            <input type="text" name="name" placeholder="Your Name" required/>
+          </div>
+          <div class="field-row">
+            <label>Your Email <span>*</span></label>
+            <input type="email" name="email" placeholder="Email Address" required/>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <div class="field-row">
+            <label>Phone Number <span>*</span></label>
+            <input type="tel" name="phone" placeholder="E.g. +91 98251 13093"/>
+          </div>
+          <div class="field-row">
+            <label>Department <span>*</span></label>
+            <select name="department">
+              <option value="HR">HR</option>
+              <option value="Sales">Sales</option>
+              <option value="Technical">Technical</option>
+              <option value="General">General Enquiry</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="file-upload-row">
+          <label>Upload File <span>*</span></label>
+          <div class="file-upload-wrap">
+            <button type="button" class="file-btn" onclick="document.getElementById('fileInput').click()">Choose File</button>
+            <span class="file-name" id="fileName">No file chosen</span>
+            <input type="file" id="fileInput" name="file" accept=".pdf,.doc,.docx,.jpg,.png"/>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <label>Message <span>*</span></label>
+          <div class="textarea-wrap">
+            <textarea name="message" id="messageArea" placeholder="Enter your message..." maxlength="180" required></textarea>
+            <span class="char-count"><span id="charCount">0</span> / 180</span>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <span>Send Question</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+
+      </form>
+    </div>
+
+    <!-- RIGHT: INFO -->
+    <div class="page-info-panel">
+      <h2 class="info-panel-heading">Let's Connect</h2>
+      <p class="info-panel-desc">
+        JATSON is an integrated solution provider for Industrial Electrification, offering Turnkey Electrical Installation, manufacturing of various types of Low Voltage and Medium Voltage Switchboards. Also provide services of Energy Audit.
+      </p>
+      <p class="info-panel-desc">
+        To talk to our professional regarding project, estimates or more. Get in touch with us.
+      </p>
+
+      <div class="info-divider"></div>
+
+      <!-- Address -->
+      <div class="page-item">
+        <div class="page-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+          </svg>
+        </div>
+        <div class="page-item-body">
+          <p class="page-item-label">Our Address</p>
+          <p class="page-item-text">
+            Survey no. - 1045/1046, NH-48, Dhamdachi Road,<br>
+            village-Dhamdachi, Valsad - 396035
+          </p>
+        </div>
+      </div>
+
+      <!-- Sales -->
+      <div class="page-item">
+        <div class="page-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M2 8l10 7 10-7"/>
+          </svg>
+        </div>
+        <div class="page-item-body">
+          <p class="page-item-label">Sales</p>
+          <div class="page-item-title">Sales</div>
+          <p class="page-item-text">
+            sales@jatson.com<br>
+            <a href="tel:+919825113093">+91 98251 13093</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- HR -->
+      <div class="page-item">
+        <div class="page-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M2 8l10 7 10-7"/>
+          </svg>
+        </div>
+        <div class="page-item-body">
+          <p class="page-item-label">Human Resources</p>
+          <div class="page-item-title">HR</div>
+          <p class="page-item-text">
+            hr@jatson.com<br>
+            <a href="tel:+917567831117">+91 75678 31117</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- CIN -->
+      <div class="page-item">
+        <div class="page-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <line x1="6" y1="9" x2="18" y2="9"/>
+            <line x1="6" y1="13" x2="14" y2="13"/>
+          </svg>
+        </div>
+        <div class="page-item-body">
+          <p class="page-item-label">Company Identification</p>
+          <div class="page-item-title">CIN</div>
+          <p class="page-item-text">U31103GJ2004PTC044090</p>
+        </div>
+      </div>
+
+      <!-- Social icons -->
+      <div class="social-row">
+        <a href="#" class="social-btn" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#14192e"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="X / Twitter">
+          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="#14192e"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#14192e" stroke-width="2"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       MAP STRIP
+  ═══════════════════════════════════════ -->
+  <div class="map-strip">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3726.5!2d72.9!3d20.5!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDMwJzAwLjAiTiA3MsKwNTQnMDAuMCJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="JATSON Office — Valsad, Gujarat">
+    </iframe>
+    <div class="map-strip-overlay"></div>
+    <div class="map-strip-label">
+      <p>Find us at</p>
+      <h3>Valsad, Gujarat</h3>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER — injected by js/main.js
+  ═══════════════════════════════════════ -->
+  <div id="footer"></div>
+
+  <!-- ═══════════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/page.js"></script>
+
+  <script>
+    /* ── Contact page JS — runs after main.js ── */
+
+  </script>
+
+</body>
+</html>

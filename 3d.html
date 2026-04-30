@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>JATSON — Precision Engineered Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#f5f2eb;--offwhite:#ede9df;--navy:#0a1628;--primary:#2a344e;
+  --navy-70:rgba(10,22,40,0.7);--navy-40:rgba(10,22,40,0.4);
+}
+html{scroll-behavior:auto}
+body{background:#0a0c12;color:#f5f2eb;font-family:'DM Sans',sans-serif;overflow-x:hidden}
+body::before{
+  content:'';position:fixed;inset:0;z-index:999;pointer-events:none;opacity:0.02;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size:128px 128px
+}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;padding:28px 56px
+}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.2em;color:#f5f2eb}
+.nav-links{display:flex;gap:40px;list-style:none}
+.nav-links a{
+  font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;
+  color:#f5f2eb;text-decoration:none;opacity:0.35;transition:opacity 0.2s
+}
+.nav-links a:hover{opacity:1}
+#wrapper{position:relative;height:400vh}
+#stage{
+  position:sticky;top:0;height:100vh;width:100%;
+  overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0a0c12
+}
+
+/* THREE.JS CANVAS — full-screen industrial background */
+#three-canvas{
+  position:absolute;inset:0;width:100%;height:100%;z-index:0;
+  transition:none
+}
+
+/* Dark overlay that fades out on power-up */
+#scene-overlay{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:rgba(4,5,10,0.65);
+  transition:none
+}
+
+#cables{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:5;pointer-events:none;overflow:visible
+}
+.cable{fill:none;stroke-linecap:square;stroke-linejoin:miter}
+.cable-glow{fill:none;stroke-linecap:square;stroke-linejoin:miter;opacity:0;filter:blur(3px)}
+#lc1,#lc1g,#rc1,#rc1g{stroke:#ef4444}
+#lc2,#lc2g,#rc2,#rc2g{stroke:#facc15}
+#lc3,#lc3g,#rc3,#rc3g{stroke:#3b82f6}
+
+#hero-text{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;z-index:10;width:680px;max-width:90vw;pointer-events:none
+}
+.sub{
+  font-size:10px;font-weight:500;letter-spacing:0.3em;text-transform:uppercase;
+  color:rgba(245,242,235,0.4);margin-bottom:22px;
+  display:flex;align-items:center;justify-content:center;gap:14px
+}
+.sub::before,.sub::after{content:'';display:block;width:32px;height:1px;background:rgba(245,242,235,0.4)}
+.headline{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,11vw,128px);
+  line-height:0.88;letter-spacing:0.03em;color:#f5f2eb;margin-bottom:32px
+}
+.desc{
+  font-size:14px;font-weight:300;line-height:1.85;
+  color:rgba(245,242,235,0.65);max-width:400px;margin:0 auto;font-style:italic
+}
+
+#transformer-box{
+  position:absolute;top:60%;left:50%;transform:translate(-50%,-50%);
+  z-index:8;opacity:0;width:450px;height:100%;
+  display:flex;align-items:center;justify-content:center
+}
+#transformer-img{width:100%;height:100%;object-fit:contain}
+
+#logo-overlay{
+  position:absolute;top:20%;left:51%;transform:translate(-50%,-50%);
+  z-index:20;opacity:0;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;gap:6px
+}
+#logo-png{
+  width:clamp(200px,28vw,380px);height:auto;opacity:0;display:block
+}
+.logo-tagline{
+  font-size:9px;letter-spacing:0.36em;text-transform:uppercase;
+  color:#f5f2eb;opacity:0
+}
+
+/* Power burst flash effect */
+#power-flash{
+  position:absolute;inset:0;z-index:15;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(255,200,50,0.25) 0%,rgba(255,150,20,0.12) 30%,transparent 70%);
+  opacity:0
+}
+
+@keyframes pngAppear{
+  0%{opacity:0;filter:brightness(3) saturate(0)}
+  15%{opacity:0.3;filter:brightness(2) saturate(0.3)}
+  20%{opacity:0.9;filter:brightness(1.4) saturate(0.7)}
+  22%{opacity:0.5;filter:brightness(0.8) saturate(0.4)}
+  30%{opacity:1;filter:brightness(1.1) saturate(1)}
+  100%{opacity:1;filter:brightness(1) saturate(1) drop-shadow(0 0 12px rgba(255,180,50,0.5))}
+}
+@keyframes pngPulse{
+  0%,100%{filter:brightness(1) drop-shadow(0 0 8px rgba(255,160,30,0.3))}
+  50%{filter:brightness(1.06) drop-shadow(0 0 22px rgba(255,180,50,0.55))}
+}
+@keyframes pngFlicker{
+  0%{opacity:1}88%{opacity:1}89%{opacity:0.6}90%{opacity:1}93%{opacity:1}94%{opacity:0.35}95%{opacity:1}100%{opacity:1}
+}
+@keyframes taglineAppear{
+  from{opacity:0;letter-spacing:0.5em}
+  to{opacity:0.65;letter-spacing:0.36em}
+}
+#logo-png.lit{
+  animation:pngAppear 0.6s ease-out forwards,pngPulse 3s ease-in-out infinite 0.6s,pngFlicker 5s ease-in-out infinite 1.2s
+}
+.logo-tagline.lit{animation:taglineAppear 0.8s 0.5s ease-out forwards}
+
+/* FEATURES */
+#features{
+  padding:160px 56px 140px;background:#f5f2eb;
+  position:relative;z-index:50;overflow:hidden
+}
+#features::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(42,52,78,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(42,52,78,0.06) 1px,transparent 1px);
+  background-size:60px 60px;z-index:0
+}
+#features::after{
+  content:'';position:absolute;top:-1px;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,#2a344e,transparent);opacity:0.3
+}
+.features-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.features-header{margin-bottom:80px}
+.features-eyebrow{
+  font-size:10px;font-weight:500;letter-spacing:0.3em;text-transform:uppercase;
+  color:#2a344e;opacity:0.55;margin-bottom:20px;display:flex;align-items:center;gap:14px
+}
+.features-eyebrow::after{
+  content:'';display:block;flex:1;max-width:80px;height:1px;background:#2a344e;opacity:0.3
+}
+.features-title{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,7vw,84px);
+  line-height:0.92;letter-spacing:0.03em;color:#2a344e
+}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(42,52,78,0.12)}
+.card{
+  padding:64px 52px;background:#f5f2eb;position:relative;overflow:hidden;transition:background 0.3s
+}
+.card:hover{background:rgba(42,52,78,0.03)}
+.card::before{
+  content:'';position:absolute;top:0;left:0;width:48px;height:2px;background:#2a344e;opacity:0.35
+}
+.card-num{
+  font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:1;
+  color:#2a344e;opacity:0.06;position:absolute;top:36px;right:36px;letter-spacing:0.05em
+}
+.card-title{
+  font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:0.06em;
+  color:#2a344e;margin-bottom:22px;line-height:1.05
+}
+.card-text{font-size:14px;font-weight:300;line-height:1.85;color:rgba(42,52,78,0.6);max-width:320px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(42,52,78,0.12);margin-top:1px}
+.stat-cell{background:#f5f2eb;padding:48px 52px;position:relative;overflow:hidden}
+.stat-cell::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:1px;
+  background:linear-gradient(90deg,#2a344e,transparent);opacity:0.2
+}
+.stat-num{
+  font-family:'Bebas Neue',sans-serif;font-size:60px;line-height:1;letter-spacing:0.04em;
+  color:#2a344e;display:block;margin-bottom:10px;opacity:0.8
+}
+.stat-label{font-size:11px;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;color:rgba(42,52,78,0.4)}
+.page-footer{
+  padding:44px 56px;background:#f5f2eb;border-top:1px solid rgba(42,52,78,0.12);
+  display:flex;align-items:center;justify-content:space-between;position:relative;z-index:50
+}
+.footer-brand{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.2em;color:#2a344e;opacity:0.3}
+.footer-copy{font-size:11px;letter-spacing:0.08em;color:rgba(42,52,78,0.3)}
+.reveal-heading{overflow:hidden}
+.rh-eyebrow{
+  display:block;font-size:10px;font-weight:500;letter-spacing:0.3em;text-transform:uppercase;
+  color:rgba(42,52,78,0.5);margin-bottom:22px;opacity:0;transform:translateY(12px)
+}
+.rh-title{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,11vw,128px);
+  line-height:0.88;letter-spacing:0.03em;color:#f5f2eb;margin-bottom:32px;
+  opacity:0;transform:translateY(24px)
+}
+.rh-desc{
+  font-size:14px;font-weight:300;line-height:1.85;color:rgba(245,242,235,0.65);
+  max-width:400px;margin:0 auto;font-style:italic;opacity:0;transform:translateY(14px)
+}
+@media(max-width:768px){
+  nav{padding:20px 24px}.nav-links{display:none}
+  #hero-text{width:90vw}.cards-grid{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr}#features{padding:80px 24px 80px}
+  .card{padding:44px 28px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">JATSON</span>
+  <ul class="nav-links">
+    <li><a href="#">Systems</a></li>
+    <li><a href="#">Projects</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<div id="wrapper">
+  <div id="stage">
+
+    <canvas id="three-canvas"></canvas>
+    <div id="scene-overlay"></div>
+    <div id="power-flash"></div>
+
+    <svg id="cables" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <defs>
+        <filter id="glow-red" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="1.2" result="blur"/>
+          <feFlood flood-color="#ef4444" flood-opacity="1" result="color"/>
+          <feComposite in="color" in2="blur" operator="in" result="glow"/>
+          <feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow-yellow" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="1.2" result="blur"/>
+          <feFlood flood-color="#facc15" flood-opacity="0.8" result="color"/>
+          <feComposite in="color" in2="blur" operator="in" result="glow"/>
+          <feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow-blue" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="1.2" result="blur"/>
+          <feFlood flood-color="#3b82f6" flood-opacity="0.8" result="color"/>
+          <feComposite in="color" in2="blur" operator="in" result="glow"/>
+          <feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <path class="cable" id="lc1" stroke-width="10" d="" vector-effect="non-scaling-stroke"/>
+      <path class="cable" id="lc2" stroke-width="10" d="" vector-effect="non-scaling-stroke"/>
+      <path class="cable" id="lc3" stroke-width="10" d="" vector-effect="non-scaling-stroke"/>
+      <path class="cable" id="rc1" stroke-width="10" d="" vector-effect="non-scaling-stroke"/>
+      <path class="cable" id="rc2" stroke-width="10" d="" vector-effect="non-scaling-stroke"/>
+      <path class="cable" id="rc3" stroke-width="10" d="" vector-effect="non-scaling-stroke"/>
+      <path class="cable-glow" id="lc1g" stroke-width="20" d="" vector-effect="non-scaling-stroke" filter="url(#glow-red)"/>
+      <path class="cable-glow" id="lc2g" stroke-width="20" d="" vector-effect="non-scaling-stroke" filter="url(#glow-yellow)"/>
+      <path class="cable-glow" id="lc3g" stroke-width="20" d="" vector-effect="non-scaling-stroke" filter="url(#glow-blue)"/>
+      <path class="cable-glow" id="rc1g" stroke-width="20" d="" vector-effect="non-scaling-stroke" filter="url(#glow-red)"/>
+      <path class="cable-glow" id="rc2g" stroke-width="20" d="" vector-effect="non-scaling-stroke" filter="url(#glow-yellow)"/>
+      <path class="cable-glow" id="rc3g" stroke-width="20" d="" vector-effect="non-scaling-stroke" filter="url(#glow-blue)"/>
+    </svg>
+
+    <div id="hero-text" class="reveal-heading" data-scroll="false" data-stagger="0.18">
+      <span class="rh-eyebrow sub">Precision Engineered Systems</span>
+      <h1 class="rh-title headline">Power,<br/>Perfectly<br/>Directed.</h1>
+      <p class="rh-desc desc">Electrical systems that don't merely distribute energy — they command it.</p>
+    </div>
+
+    <div id="transformer-box">
+      <img id="transformer-img" src="15.png" alt="Transformer"/>
+    </div>
+
+    <div id="logo-overlay">
+      <img id="logo-png" src="logo.png" alt="JATSON"/>
+      <div class="logo-tagline" id="logo-tagline">Precision Engineered Systems</div>
+    </div>
+
+  </div>
+</div>
+
+<section id="features">
+  <div class="features-inner">
+    <div class="features-header">
+      <div class="reveal-heading" data-stagger="0.12">
+        <span class="rh-eyebrow features-eyebrow" style="color:#2a344e">Core Capabilities</span>
+        <h2 class="rh-title features-title" style="color:#2a344e">Built to<br/>Last. Built<br/>to Lead.</h2>
+      </div>
+    </div>
+    <div class="cards-grid">
+      <div class="card" data-animate>
+        <span class="card-num">01</span>
+        <h3 class="card-title">Engineered Precision</h3>
+        <p class="card-text">Built with exacting standards for performance, safety, and long-term reliability. Every component is selected and tested to exceed industry benchmarks.</p>
+      </div>
+      <div class="card" data-animate>
+        <span class="card-num">02</span>
+        <h3 class="card-title">Intelligent Power Flow</h3>
+        <p class="card-text">Smart routing ensures zero energy waste and maximum uptime under any load condition. Distributed control, unified vision.</p>
+      </div>
+      <div class="card" data-animate>
+        <span class="card-num">03</span>
+        <h3 class="card-title">Fault-Tolerant Design</h3>
+        <p class="card-text">Redundant pathways and real-time diagnostics eliminate single points of failure before they become problems.</p>
+      </div>
+      <div class="card" data-animate>
+        <span class="card-num">04</span>
+        <h3 class="card-title">Future-Ready Systems</h3>
+        <p class="card-text">Modular architecture scales with your operational demands. Designed for today's grid, ready for tomorrow's requirements.</p>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-cell" data-animate>
+        <span class="stat-num">99.97%</span>
+        <span class="stat-label">System Uptime</span>
+      </div>
+      <div class="stat-cell" data-animate>
+        <span class="stat-num">2400+</span>
+        <span class="stat-label">Installations</span>
+      </div>
+      <div class="stat-cell" data-animate>
+        <span class="stat-num">38yr</span>
+        <span class="stat-label">Engineering Experience</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="page-footer">
+  <span class="footer-brand">JATSON</span>
+  <span class="footer-copy">© 2025 JATSON Electrical Systems. All rights reserved.</span>
+</footer>
+
+<script>
+/* ─── THREE.JS INDUSTRIAL SCENE ─── */
+(function(){
+  const canvas = document.getElementById('three-canvas');
+  const W = window.innerWidth, H = window.innerHeight;
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
+  renderer.setSize(W,H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.3; // start DARK
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x04050a);
+  scene.fog = new THREE.FogExp2(0x04050a, 0.018);
+
+  const camera = new THREE.PerspectiveCamera(55, W/H, 0.1, 300);
+  camera.position.set(0, 8, 32);
+  camera.lookAt(0, 4, 0);
+
+  /* ── MATERIALS ── */
+  const steelMat = new THREE.MeshStandardMaterial({color:0x1a1f2e,metalness:0.85,roughness:0.45});
+  const darkMat  = new THREE.MeshStandardMaterial({color:0x0d1018,metalness:0.6,roughness:0.7});
+  const pipeMat  = new THREE.MeshStandardMaterial({color:0x22283a,metalness:0.9,roughness:0.3});
+  const rustMat  = new THREE.MeshStandardMaterial({color:0x2a1f15,metalness:0.3,roughness:0.9});
+  const glassMat = new THREE.MeshStandardMaterial({color:0x0a1020,metalness:0.1,roughness:0.05,transparent:true,opacity:0.7});
+
+  /* ── FLOOR ── */
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(120,80), new THREE.MeshStandardMaterial({color:0x080c14,metalness:0.4,roughness:0.8}));
+  floor.rotation.x = -Math.PI/2;
+  floor.receiveShadow = true;
+  scene.add(floor);
+
+  /* ── FACTORY WALL / BACK ── */
+  const backWall = new THREE.Mesh(new THREE.BoxGeometry(120,30,1), darkMat);
+  backWall.position.set(0,15,-20);
+  backWall.receiveShadow = true;
+  scene.add(backWall);
+
+  const sideL = new THREE.Mesh(new THREE.BoxGeometry(1,30,80), darkMat);
+  sideL.position.set(-40,15,0);
+  scene.add(sideL);
+  const sideR = sideL.clone();
+  sideR.position.x = 40;
+  scene.add(sideR);
+
+  /* ── INDUSTRIAL STRUCTURE HELPER ── */
+  function box(w,h,d,mat,x,y,z,rx=0,ry=0){
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat);
+    m.position.set(x,y,z);
+    m.rotation.set(rx,ry,0);
+    m.castShadow = m.receiveShadow = true;
+    scene.add(m);
+    return m;
+  }
+  function cyl(rT,rB,h,seg,mat,x,y,z,rx=0){
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(rT,rB,h,seg), mat);
+    m.position.set(x,y,z);
+    m.rotation.x = rx;
+    m.castShadow = true;
+    scene.add(m);
+    return m;
+  }
+
+  /* ── BIG TRANSFORMER TOWERS ── */
+  box(3.5,14,3.5,steelMat,-12,7,-8);
+  box(3.5,14,3.5,steelMat,12,7,-8);
+  box(3.5,18,3.5,steelMat,0,9,-8);
+  // cross beams
+  box(24,0.5,0.5,pipeMat,0,16,-8);
+  box(24,0.5,0.5,pipeMat,0,10,-8);
+  // insulators on top
+  for(let x of [-12,0,12]){
+    cyl(0.4,0.5,2,8,new THREE.MeshStandardMaterial({color:0x8b6914,metalness:0.1,roughness:0.6}),x,17,-8);
+  }
+
+  /* ── LARGE CYLINDRICAL TANKS ── */
+  cyl(2.8,2.8,10,16,rustMat,-22,5,-10);
+  cyl(2.5,2.5,8,16,rustMat,-22,13,-10);
+  cyl(3,3,12,16,rustMat,22,6,-12);
+  // tank caps
+  const capGeo = new THREE.CylinderGeometry(2.9,2.9,0.4,16);
+  [-22,22].forEach((x,i)=>{
+    const m = new THREE.Mesh(capGeo,pipeMat);
+    m.position.set(x,i===0?15:12,i===0?-10:-12);
+    scene.add(m);
+  });
+
+  /* ── PIPE RUNS ── */
+  // horizontal pipes along back
+  cyl(0.35,0.35,80,8,pipeMat,0,4,-16,0); // long horiz pipe
+  cyl(0.25,0.25,80,8,pipeMat,0,6,-16,0);
+  cyl(0.2,0.2,80,8,pipeMat,0,8,-16,0);
+  // vertical risers
+  for(let x=-30;x<=30;x+=15){
+    cyl(0.3,0.3,10,8,pipeMat,x,5,-16);
+  }
+
+  /* ── GANTRY / WALKWAY ── */
+  box(60,0.3,2,steelMat,0,12,-14);
+  box(60,0.3,2,steelMat,0,12,-6);
+  // gantry rails
+  for(let x=-28;x<=28;x+=7){
+    box(0.15,2,2,pipeMat,x,13,-14);
+    box(0.15,2,2,pipeMat,x,13,-6);
+  }
+  // gantry floor grating
+  box(60,0.1,8,new THREE.MeshStandardMaterial({color:0x141820,metalness:0.7,roughness:0.6,wireframe:false}),0,11.9,-10);
+
+  /* ── FOREGROUND TRANSFORMER/SWITCHGEAR BOXES ── */
+  box(5,6,3,steelMat,-8,3,8);
+  box(5,6,3,steelMat,8,3,8);
+  box(7,4,2.5,darkMat,0,2,10);
+  // panel faces
+  box(4.8,5.8,0.1,glassMat,-8,3,9.55);
+  box(4.8,5.8,0.1,glassMat,8,3,9.55);
+  // small details on panels
+  for(let i=0;i<4;i++){
+    box(0.4,0.4,0.2,pipeMat,-8+i*0.9-1.35,4.2,9.65);
+    box(0.4,0.4,0.2,pipeMat,8+i*0.9-1.35,4.2,9.65);
+  }
+
+  /* ── CABLE TRAYS (horizontal ladder trays) ── */
+  for(let z=-4;z<12;z+=3){
+    box(30,0.15,0.8,pipeMat,0,9,z);
+  }
+
+  /* ── STEEL COLUMNS ── */
+  for(let x of [-35,35]){
+    for(let z of [-18,0,12]){
+      box(1,24,1,darkMat,x,12,z);
+    }
+  }
+  // roof trusses
+  for(let z=-18;z<=12;z+=6){
+    box(72,0.4,0.4,pipeMat,0,23,z);
+  }
+  // diagonal bracing
+  for(let x=-30;x<=30;x+=15){
+    box(0.3,10,0.3,pipeMat,x,18,-18,0.5);
+  }
+
+  /* ── GROUND DETAIL — concrete slabs ── */
+  for(let xi=-2;xi<=2;xi++){
+    for(let zi=-3;zi<=2;zi++){
+      box(9.8,0.08,9.8,new THREE.MeshStandardMaterial({color:0x0c1018,metalness:0.2,roughness:0.95}),xi*10,0.04,zi*10);
+    }
+  }
+
+  /* ══════════════════════════════════════════════
+     LIGHTS — START DARK, POWER UP ON SCROLL
+  ══════════════════════════════════════════════ */
+  const ambient = new THREE.AmbientLight(0x050810, 0.4);
+  scene.add(ambient);
+
+  // cool moonlight / pre-power feel
+  const moonLight = new THREE.DirectionalLight(0x2030ff, 0.15);
+  moonLight.position.set(-20,40,10);
+  scene.add(moonLight);
+
+  // WARM industrial lights — off at start
+  const warmLights = [];
+  const warmPositions = [
+    [-12,18,-8],[12,18,-8],[0,20,-8],
+    [-22,20,-10],[22,20,-12],
+    [0,14,0],[-8,8,10],[8,8,10]
+  ];
+  const warmColors = [0xffaa22,0xff8800,0xffcc44,0xff7711,0xffbb33,0xffaa22,0xffcc44,0xff9922];
+  warmPositions.forEach((p,i)=>{
+    const l = new THREE.PointLight(warmColors[i], 0, 22, 1.8);
+    l.position.set(...p);
+    l.castShadow = i<3;
+    scene.add(l);
+    warmLights.push(l);
+  });
+
+  // ELECTRICAL ARC light — blue-white burst at center
+  const arcLight = new THREE.PointLight(0x88aaff, 0, 30, 1.5);
+  arcLight.position.set(0, 8, 0);
+  scene.add(arcLight);
+
+  // HAZARD INDICATOR — small red status lights on panels
+  const hazardLights = [];
+  [[-8,5,9.7],[8,5,9.7],[-8,3,9.7],[8,3,9.7]].forEach(p=>{
+    const l = new THREE.PointLight(0xff2200, 0, 3, 3);
+    l.position.set(...p);
+    scene.add(l);
+    hazardLights.push(l);
+    // indicator mesh
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.08,8,8), new THREE.MeshStandardMaterial({color:0xff2200,emissive:0xff0000,emissiveIntensity:0}));
+    dot.position.set(...p);
+    dot.userData.emissiveMesh = true;
+    scene.add(dot);
+  });
+
+  // Emissive panel strips — off at start
+  const emissiveMats = [];
+  function addEmissiveStrip(x,y,z,w,h,color){
+    const mat = new THREE.MeshStandardMaterial({color:color,emissive:color,emissiveIntensity:0,metalness:0.3,roughness:0.5});
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,0.05),mat);
+    m.position.set(x,y,z);
+    scene.add(m);
+    emissiveMats.push(mat);
+    return mat;
+  }
+  addEmissiveStrip(-8,1.5,9.7,3.5,0.12,0xffaa22);
+  addEmissiveStrip(8,1.5,9.7,3.5,0.12,0xffaa22);
+  addEmissiveStrip(-8,2.0,9.7,3.5,0.06,0xffffff);
+  addEmissiveStrip(8,2.0,9.7,3.5,0.06,0xffffff);
+  addEmissiveStrip(0,1.5,10.55,5.5,0.15,0x2255ff);
+  // ceiling strip lights
+  for(let x=-25;x<=25;x+=10){
+    addEmissiveStrip(x,22.5,-12,0.3,0.3,0xffeedd);
+  }
+
+  /* ── ANIMATED SPARK PARTICLES ── */
+  const sparkGeo = new THREE.BufferGeometry();
+  const sparkCount = 120;
+  const sparkPos = new Float32Array(sparkCount*3);
+  const sparkVel = [];
+  for(let i=0;i<sparkCount;i++){
+    sparkPos[i*3]  = (Math.random()-0.5)*4;
+    sparkPos[i*3+1]= Math.random()*3+6;
+    sparkPos[i*3+2]= (Math.random()-0.5)*4;
+    sparkVel.push({vx:(Math.random()-0.5)*0.08,vy:Math.random()*0.12+0.04,vz:(Math.random()-0.5)*0.08,life:Math.random()});
+  }
+  sparkGeo.setAttribute('position',new THREE.BufferAttribute(sparkPos,3));
+  const sparkMat = new THREE.PointsMaterial({color:0xffcc44,size:0.12,transparent:true,opacity:0,sizeAttenuation:true,blending:THREE.AdditiveBlending,depthWrite:false});
+  const sparks = new THREE.Points(sparkGeo,sparkMat);
+  scene.add(sparks);
+
+  /* ── VOLUMETRIC DUST/HAZE PARTICLES ── */
+  const hazeGeo = new THREE.BufferGeometry();
+  const hazeCount = 300;
+  const hazePos = new Float32Array(hazeCount*3);
+  for(let i=0;i<hazeCount;i++){
+    hazePos[i*3]  = (Math.random()-0.5)*60;
+    hazePos[i*3+1]= Math.random()*20;
+    hazePos[i*3+2]= (Math.random()-0.5)*40;
+  }
+  hazeGeo.setAttribute('position',new THREE.BufferAttribute(hazePos,3));
+  const hazeMat = new THREE.PointsMaterial({color:0xffa030,size:0.5,transparent:true,opacity:0,sizeAttenuation:true,blending:THREE.AdditiveBlending,depthWrite:false});
+  const hazeParticles = new THREE.Points(hazeGeo,hazeMat);
+  scene.add(hazeParticles);
+
+  /* ── POWER STATE (driven by scroll) ── */
+  const pw = {level:0}; // 0=off, 1=fully powered
+  let lastPw = -1;
+  let sparkActive = false;
+
+  function applyPower(t){
+    if(Math.abs(t-lastPw)<0.001) return;
+    lastPw = t;
+    const e = Math.max(0,t);
+
+    renderer.toneMappingExposure = 0.3 + e*1.4;
+    scene.fog.density = 0.018 - e*0.008;
+
+    ambient.intensity = 0.4 + e*1.2;
+    moonLight.intensity = 0.15*(1-e*0.7);
+
+    warmLights.forEach((l,i)=>{
+      const delay = i/warmLights.length;
+      l.intensity = Math.max(0,e-delay*0.3)*2.5;
+    });
+
+    arcLight.intensity = e>0.7 ? (e-0.7)/0.3*3 : 0;
+
+    hazardLights.forEach(l=>{ l.intensity = e>0.5?(e-0.5)/0.5*1.5:0; });
+    scene.children.forEach(c=>{
+      if(c.userData && c.userData.emissiveMesh && c.material){
+        c.material.emissiveIntensity = e>0.5?(e-0.5)/0.5*2:0;
+      }
+    });
+
+    emissiveMats.forEach((m,i)=>{
+      const d = (i/emissiveMats.length)*0.4;
+      m.emissiveIntensity = Math.max(0,e-d)*2.5;
+    });
+
+    sparkActive = e>0.7;
+    sparkMat.opacity = Math.max(0,e-0.75)*3;
+    hazeMat.opacity = Math.max(0,e-0.4)*0.18;
+
+    // slight camera tilt on power
+    camera.position.y = 8 - e*1.5;
+    camera.position.z = 32 - e*4;
+    camera.lookAt(0,4-e*1,0);
+  }
+
+  /* ── RENDER LOOP ── */
+  let frame=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    frame++;
+    applyPower(pw.level);
+
+    if(sparkActive){
+      const pos = sparkGeo.attributes.position.array;
+      for(let i=0;i<sparkCount;i++){
+        sparkVel[i].life += 0.016;
+        if(sparkVel[i].life>1){
+          pos[i*3]  = (Math.random()-0.5)*4;
+          pos[i*3+1]= Math.random()*2+6;
+          pos[i*3+2]= (Math.random()-0.5)*4;
+          sparkVel[i]={vx:(Math.random()-0.5)*0.1,vy:Math.random()*0.14+0.05,vz:(Math.random()-0.5)*0.1,life:0};
+        } else {
+          pos[i*3]  += sparkVel[i].vx;
+          pos[i*3+1]+= sparkVel[i].vy;
+          pos[i*3+2]+= sparkVel[i].vz;
+          sparkVel[i].vy -= 0.006;
+        }
+      }
+      sparkGeo.attributes.position.needsUpdate=true;
+    }
+
+    // gentle haze drift
+    if(hazeMat.opacity>0.01){
+      const hp = hazeGeo.attributes.position.array;
+      for(let i=0;i<hazeCount;i++){
+        hp[i*3]  += Math.sin(frame*0.002+i)*0.003;
+        hp[i*3+1]+= 0.004;
+        if(hp[i*3+1]>22){ hp[i*3+1]=0; }
+      }
+      hazeGeo.attributes.position.needsUpdate=true;
+    }
+
+    // subtle arc flicker when fully powered
+    if(pw.level>0.8){
+      arcLight.intensity = ((pw.level-0.7)/0.3)*3 + Math.sin(frame*0.4)*0.4;
+    }
+
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  window.addEventListener('resize',()=>{
+    const W=window.innerWidth,H=window.innerHeight;
+    camera.aspect=W/H;camera.updateProjectionMatrix();
+    renderer.setSize(W,H);
+  });
+
+  /* expose power control */
+  window._setPowerLevel = function(v){ pw.level = v; };
+})();
+
+/* ─── GSAP SCROLL SYSTEM ─── */
+gsap.registerPlugin(ScrollTrigger);
+
+/* heading reveal */
+function initHeadingReveal(selector){
+  selector=selector||'.reveal-heading';
+  document.querySelectorAll(selector).forEach(block=>{
+    if(block.dataset.rhInit) return;
+    block.dataset.rhInit='1';
+    const stagger=parseFloat(block.dataset.stagger||0.15);
+    const duration=parseFloat(block.dataset.duration||1);
+    const yOffset=parseFloat(block.dataset.y||30);
+    const useScroll=block.dataset.scroll!=='false';
+    const children=block.querySelectorAll('.rh-eyebrow,.rh-title,.rh-desc');
+    if(useScroll){
+      gsap.from(children,{opacity:0,y:yOffset,duration,ease:'power4.out',stagger,scrollTrigger:{trigger:block,start:'top 85%'}});
+    } else {
+      gsap.fromTo(children,{opacity:0,y:yOffset},{opacity:1,y:0,duration,ease:'power4.out',stagger,delay:0.3});
+    }
+  });
+}
+
+/* cables */
+const cableData={
+  lc1:{sx:-5,sy:35},lc2:{sx:-5,sy:50},lc3:{sx:-5,sy:65},
+  rc1:{sx:105,sy:35},rc2:{sx:105,sy:50},rc3:{sx:105,sy:65},
+};
+const heroProgress={horiz:0};
+const heroGlow={val:0};
+
+function updateHeroCables(){
+  Object.keys(cableData).forEach(id=>{
+    const {sx,sy}=cableData[id];
+    const ex=id.startsWith('l')?-5+55*heroProgress.horiz:105-55*heroProgress.horiz;
+    const d=`M ${sx} ${sy} L ${ex} ${sy}`;
+    document.getElementById(id).setAttribute('d',d);
+    document.getElementById(id+'g').setAttribute('d',d);
+  });
+  document.querySelectorAll('.cable-glow').forEach(el=>{el.style.opacity=heroGlow.val;});
+}
+
+/* scene overlay fader */
+const overlayState={o:0.65};
+function applyOverlay(){ document.getElementById('scene-overlay').style.background=`rgba(4,5,10,${overlayState.o})`; }
+applyOverlay();
+
+/* power flash */
+const flashState={o:0};
+function applyFlash(){ document.getElementById('power-flash').style.opacity=flashState.o; }
+
+/* main scroll timeline */
+const heroTL=gsap.timeline({
+  scrollTrigger:{
+    trigger:'#wrapper',start:'top top',end:'bottom bottom',scrub:1.2,
+  }
+});
+
+heroTL.to('#hero-text',{opacity:0,y:-30,duration:0.2});
+
+heroTL.to(heroProgress,{
+  horiz:1,duration:0.4,ease:'none',onUpdate:updateHeroCables
+},0.1);
+
+heroTL.to('#transformer-box',{opacity:1,duration:0.15},0.15);
+
+/* POWER UP — Three.js scene illuminates as cables converge */
+heroTL.to({_:0},{
+  _:1, duration:0.35, ease:'power2.inOut',
+  onUpdate:function(){ window._setPowerLevel && window._setPowerLevel(this.progress()); }
+},0.45);
+
+/* overlay fades revealing the lit scene */
+heroTL.to(overlayState,{
+  o:0.05, duration:0.3, ease:'power2.inOut',
+  onUpdate:applyOverlay, onReverseComplete:()=>{overlayState.o=0.65;applyOverlay();window._setPowerLevel&&window._setPowerLevel(0);}
+},0.5);
+
+/* power flash burst */
+heroTL.to(flashState,{o:1,duration:0.05,ease:'none',onUpdate:applyFlash},0.78);
+heroTL.to(flashState,{o:0,duration:0.12,ease:'power2.out',onUpdate:applyFlash},0.83);
+
+heroTL.to(heroGlow,{val:1,duration:0.1},0.8);
+
+heroTL.to('#logo-overlay',{
+  opacity:1,duration:0.1,
+  onStart:()=>{
+    document.getElementById('logo-png').classList.add('lit');
+    document.getElementById('logo-tagline').classList.add('lit');
+  },
+  onReverseComplete:()=>{
+    document.getElementById('logo-png').classList.remove('lit');
+    document.getElementById('logo-tagline').classList.remove('lit');
+    overlayState.o=0.65; applyOverlay();
+    window._setPowerLevel&&window._setPowerLevel(0);
+  }
+},0.62);
+
+heroTL.to({},{duration:0.2});
+
+initHeadingReveal();
+gsap.from('[data-animate]',{
+  scrollTrigger:{trigger:'#features',start:'top 85%'},
+  opacity:0,y:40,stagger:0.1,duration:1,ease:'power4.out'
+});
+</script>
+</body>
+</html>
+    

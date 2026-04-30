@@ -1,0 +1,553 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .jatson-wrap {
+    font-family: 'DM Sans', sans-serif;
+    background: #09111f;
+    color: #ffffff;
+    overflow: hidden;
+  }
+
+  /* ── NAV ── */
+  .jnav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 28px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 20;
+  }
+  .jnav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.22em;
+    color: #fff;
+  }
+  .jnav-tag { font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: 2px; }
+  .jnav-links { display: flex; gap: 32px; list-style: none; }
+  .jnav-links a { text-decoration: none; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.38); transition: color 0.25s; }
+  .jnav-links a:hover { color: #fff; }
+
+  /* ── HERO ── */
+  .jhero {
+    position: relative;
+    height: 100vh;
+    min-height: 640px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 52px 80px;
+    overflow: hidden;
+  }
+
+  /* video-like dark bg with animated gradient */
+  .jhero-bg {
+    position: absolute;
+    inset: 0;
+    background: #09111f;
+    z-index: 0;
+  }
+  .jhero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(14,60,120,0.55) 0%, transparent 70%);
+    animation: bgPulse 8s ease-in-out infinite alternate;
+  }
+  .jhero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 40% at 30% 70%, rgba(6,30,70,0.4) 0%, transparent 65%);
+  }
+  @keyframes bgPulse { 0%{opacity:0.6} 100%{opacity:1} }
+
+  /* scan lines texture */
+  .jhero-scan {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px);
+    pointer-events: none;
+  }
+
+  /* bottom gradient to blend into next section */
+  .jhero-fade {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, transparent, #09111f);
+    z-index: 2;
+  }
+
+  /* floating grid lines */
+  .jhero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.07;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px);
+    background-size: 80px 80px;
+    transform: perspective(600px) rotateX(15deg) scale(1.2);
+    transform-origin: 50% 100%;
+  }
+
+  .jhero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+  }
+
+  .jhero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 28px;
+  }
+  .jhero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: rgba(255,255,255,0.35);
+  }
+
+  .jhero-h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 10vw, 120px);
+    line-height: 0.88;
+    letter-spacing: 0.01em;
+    color: #ffffff;
+    margin-bottom: 36px;
+  }
+  .jhero-h1 em {
+    font-style: normal;
+    color: rgba(255,255,255,0.28);
+  }
+
+  .jhero-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.55);
+    max-width: 480px;
+    margin-bottom: 44px;
+    font-weight: 300;
+  }
+
+  .jhero-cta {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .btn-primary {
+    background: #fff;
+    color: #09111f;
+    border: none;
+    padding: 14px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s;
+  }
+  .btn-primary:hover { background: rgba(255,255,255,0.88); }
+  .btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 13px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.25s, color 0.25s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.55); color: #fff; }
+
+  .jhero-scroll {
+    position: absolute;
+    bottom: 28px;
+    right: 52px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+  }
+  .scroll-bar {
+    width: 1px;
+    height: 40px;
+    background: rgba(255,255,255,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-bar::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 40%;
+    background: rgba(255,255,255,0.6);
+    animation: scrollAnim 2s ease-in-out infinite;
+  }
+  @keyframes scrollAnim { 0%{top:-40%} 100%{top:100%} }
+
+  /* ── FLOW SECTION ── */
+  .jflow {
+    background: #09111f;
+    padding: 100px 52px 120px;
+    position: relative;
+  }
+  .jflow-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+    margin-bottom: 70px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .jflow-label::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .flow-svg-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  #jflow-svg {
+    width: 100%;
+    max-width: 720px;
+    overflow: visible;
+  }
+
+  /* SVG styles */
+  .node-box {
+    fill: rgba(255,255,255,0.04);
+    stroke: rgba(255,255,255,0.12);
+    stroke-width: 1;
+  }
+  .node-box-accent {
+    fill: rgba(255,255,255,0.06);
+    stroke: rgba(255,255,255,0.25);
+    stroke-width: 1;
+  }
+  .node-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    fill: rgba(255,255,255,0.8);
+    font-weight: 700;
+  }
+  .node-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9.5px;
+    fill: rgba(255,255,255,0.38);
+    letter-spacing: 0.03em;
+  }
+  .flow-path {
+    fill: none;
+    stroke: rgba(255,255,255,0.18);
+    stroke-width: 1.2;
+    stroke-dasharray: 4 4;
+  }
+  .flow-path-solid {
+    fill: none;
+    stroke: rgba(255,255,255,0.25);
+    stroke-width: 1.4;
+  }
+  .dot-arrow {
+    fill: rgba(255,255,255,0.4);
+  }
+
+  /* animated draw-in */
+  .draw-line {
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500;
+    transition: stroke-dashoffset 0.9s cubic-bezier(0.4,0,0.2,1);
+  }
+  .draw-line.drawn { stroke-dashoffset: 0; }
+
+  .fade-node { opacity: 0; transition: opacity 0.5s ease, transform 0.5s ease; transform: translateY(8px); }
+  .fade-node.shown { opacity: 1; transform: translateY(0); }
+
+  /* ── FEATURES ── */
+  .jfeatures {
+    background: #ffffff;
+    color: #0b1f3b;
+    padding: 120px 52px;
+  }
+  .jfeat-inner { max-width: 1100px; margin: auto; }
+  .jfeat-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(11,31,59,0.4);
+    margin-bottom: 20px;
+  }
+  .jfeat-h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 7vw, 84px);
+    line-height: 0.9;
+    margin-bottom: 80px;
+    color: #0b1f3b;
+  }
+  .phases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(11,31,59,0.1);
+    margin-bottom: 1px;
+  }
+  .phase-card {
+    background: #fff;
+    padding: 50px;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .phase-card:hover { background: #f9fafc; }
+  .phase-num { font-size: 10px; letter-spacing: 0.2em; color: rgba(11,31,59,0.4); margin-bottom: 20px; }
+  .phase-card h3 { font-size: 20px; margin-bottom: 12px; font-weight: 500; color: #0b1f3b; }
+  .phase-card p { font-size: 14px; line-height: 1.7; color: rgba(11,31,59,0.6); }
+  .phase-dot { width: 7px; height: 7px; background: #0b1f3b; border-radius: 50%; position: absolute; top: 28px; right: 28px; opacity: 0.18; }
+
+  .stat-band {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(11,31,59,0.1);
+  }
+  .stat-item { background: #fff; padding: 40px; }
+  .stat-n { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #0b1f3b; }
+  .stat-l { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(11,31,59,0.4); }
+
+  footer {
+    padding: 40px 52px;
+    border-top: 1px solid rgba(11,31,59,0.1);
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .foot-brand { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.2em; font-size: 18px; opacity: 0.25; color: #0b1f3b; }
+  .foot-copy { font-size: 11px; color: rgba(11,31,59,0.35); }
+
+  @media(max-width: 720px) {
+    .jhero { padding: 0 24px 60px; }
+    .jnav { padding: 22px 24px; }
+    .jnav-links { display: none; }
+    .jflow { padding: 80px 24px 100px; }
+    .jfeatures { padding: 80px 24px; }
+    footer { padding: 30px 24px; }
+    .phases-grid, .stat-band { grid-template-columns: 1fr; }
+    .jhero-scroll { display: none; }
+  }
+</style>
+
+<div class="jatson-wrap">
+
+  <!-- NAV -->
+  <nav class="jnav">
+    <div>
+      <div class="jnav-logo">JATSON</div>
+      <div class="jnav-tag">Turnkey Systems</div>
+    </div>
+    <ul class="jnav-links">
+      <li><a href="#">Systems</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="jhero">
+    <div class="jhero-bg"></div>
+    <div class="jhero-scan"></div>
+    <div class="jhero-grid"></div>
+    <div class="jhero-fade"></div>
+
+    <div class="jhero-content">
+      <div class="jhero-eyebrow">Electrical Systems Integrator</div>
+      <h1 class="jhero-h1">
+        POWER<br/>
+        BUILT TO<br/>
+        <em>LAST.</em>
+      </h1>
+      <p class="jhero-desc">
+        Turnkey electrical projects from first drawing to final commissioning.
+        Design, manufacture, and install — one team, zero handoffs.
+      </p>
+      <div class="jhero-cta">
+        <button class="btn-primary">Start a Project</button>
+        <button class="btn-ghost">View Case Studies</button>
+      </div>
+    </div>
+
+    <div class="jhero-scroll">
+      <div class="scroll-bar"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- FLOW: What is JATSON -->
+  <section class="jflow">
+    <div class="jflow-label">What is JATSON</div>
+    <div class="flow-svg-wrap">
+      <svg id="jflow-svg" viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- JATSON HUB -->
+        <g id="fn-hub" class="fade-node">
+          <rect x="240" y="30" width="200" height="64" rx="4" class="node-box-accent"/>
+          <text x="340" y="58" text-anchor="middle" class="node-label">JATSON</text>
+          <text x="340" y="76" text-anchor="middle" class="node-sub">Turnkey Electrical Systems</text>
+        </g>
+
+        <!-- vertical line hub → split point -->
+        <line id="fl-down" class="flow-path-solid draw-line" x1="340" y1="94" x2="340" y2="160"/>
+
+        <!-- TURNKEY node -->
+        <g id="fn-turnkey" class="fade-node">
+          <rect x="255" y="160" width="170" height="52" rx="4" class="node-box"/>
+          <text x="340" y="183" text-anchor="middle" class="node-label" font-size="10">TURNKEY DELIVERY</text>
+          <text x="340" y="199" text-anchor="middle" class="node-sub">End-to-end, no gaps</text>
+        </g>
+
+        <!-- vertical line turnkey → split -->
+        <line id="fl-mid" class="flow-path-solid draw-line" x1="340" y1="212" x2="340" y2="270"/>
+
+        <!-- horizontal split bar -->
+        <line id="fl-split" class="flow-path-solid draw-line" x1="100" y1="270" x2="580" y2="270"/>
+
+        <!-- three verticals down -->
+        <line id="fl-l" class="flow-path-solid draw-line" x1="100" y1="270" x2="100" y2="340"/>
+        <line id="fl-c" class="flow-path-solid draw-line" x1="340" y1="270" x2="340" y2="340"/>
+        <line id="fl-r" class="flow-path-solid draw-line" x1="580" y1="270" x2="580" y2="340"/>
+
+        <!-- SERVICE BOXES -->
+        <g id="fn-design" class="fade-node">
+          <rect x="18" y="340" width="164" height="80" rx="4" class="node-box"/>
+          <text x="100" y="368" text-anchor="middle" class="node-label" font-size="10">DESIGN</text>
+          <text x="100" y="386" text-anchor="middle" class="node-sub">Load analysis</text>
+          <text x="100" y="400" text-anchor="middle" class="node-sub">Single-line diagrams</text>
+        </g>
+
+        <g id="fn-mfg" class="fade-node">
+          <rect x="258" y="340" width="164" height="80" rx="4" class="node-box"/>
+          <text x="340" y="368" text-anchor="middle" class="node-label" font-size="10">MANUFACTURE</text>
+          <text x="340" y="386" text-anchor="middle" class="node-sub">Panels & switchgear</text>
+          <text x="340" y="400" text-anchor="middle" class="node-sub">Full QA in-house</text>
+        </g>
+
+        <g id="fn-com" class="fade-node">
+          <rect x="498" y="340" width="164" height="80" rx="4" class="node-box"/>
+          <text x="580" y="368" text-anchor="middle" class="node-label" font-size="10">COMMISSION</text>
+          <text x="580" y="386" text-anchor="middle" class="node-sub">Relay testing</text>
+          <text x="580" y="400" text-anchor="middle" class="node-sub">Thermal imaging</text>
+        </g>
+
+      </svg>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="jfeatures">
+    <div class="jfeat-inner">
+      <div class="jfeat-eyebrow">How We Deliver</div>
+      <h2 class="jfeat-h2">End-to-End.<br/>No Gaps.<br/>No Guesswork.</h2>
+      <div class="phases-grid">
+        <div class="phase-card">
+          <div class="phase-num">01 — DESIGN</div>
+          <div class="phase-dot"></div>
+          <h3>Engineered from First Principles</h3>
+          <p>Every project begins with a full load analysis, single-line diagram, and coordination study. Nothing is assumed.</p>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">02 — BUILD</div>
+          <div class="phase-dot"></div>
+          <h3>Fabricated to Spec</h3>
+          <p>Panels, switchgear, and cable assemblies manufactured in our facility. Full QA at every stage before site delivery.</p>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">03 — COMMISSION</div>
+          <div class="phase-dot"></div>
+          <h3>Live. Stable. Verified.</h3>
+          <p>System energization, protection relay testing, and thermal imaging at full load. We don't leave until every circuit is proven.</p>
+        </div>
+      </div>
+      <div class="stat-band">
+        <div class="stat-item"><div class="stat-n">340+</div><div class="stat-l">Turnkey Projects</div></div>
+        <div class="stat-item"><div class="stat-n">11kV</div><div class="stat-l">Max System Voltage</div></div>
+        <div class="stat-item"><div class="stat-n">38yr</div><div class="stat-l">Site Experience</div></div>
+        <div class="stat-item"><div class="stat-n">100%</div><div class="stat-l">Commissioning Rate</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="foot-brand">JATSON</span>
+    <span class="foot-copy">© 2025 JATSON Electrical Systems. All rights reserved.</span>
+  </footer>
+
+</div>
+
+<script>
+  const steps = [
+    { el: '#fn-hub',      delay: 300  },
+    { el: '#fl-down',     delay: 700  },
+    { el: '#fn-turnkey',  delay: 1100 },
+    { el: '#fl-mid',      delay: 1500 },
+    { el: '#fl-split',    delay: 1900 },
+    { el: '#fl-l',        delay: 2300 },
+    { el: '#fl-c',        delay: 2300 },
+    { el: '#fl-r',        delay: 2300 },
+    { el: '#fn-design',   delay: 2700 },
+    { el: '#fn-mfg',      delay: 2700 },
+    { el: '#fn-com',      delay: 2700 },
+  ];
+
+  const flowSection = document.querySelector('.jflow');
+  let animated = false;
+
+  function runFlow() {
+    if (animated) return;
+    animated = true;
+    steps.forEach(({ el, delay }) => {
+      setTimeout(() => {
+        const node = document.querySelector(el);
+        if (!node) return;
+        if (node.classList.contains('fade-node')) node.classList.add('shown');
+        if (node.classList.contains('draw-line')) node.classList.add('drawn');
+      }, delay);
+    });
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) runFlow();
+  }, { threshold: 0.3 });
+
+  if (flowSection) obs.observe(flowSection);
+  else runFlow();
+</script>

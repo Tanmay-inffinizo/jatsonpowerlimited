@@ -1,0 +1,632 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>JATSON — Turnkey Electrical Systems</title>
+
+  <link rel="stylesheet" href="css/stye.css">
+  <link rel="stylesheet" href="css/style-2.css">
+<link rel="stylesheet" href="css/glo-universal.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"/>
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <!-- ═══════════════════════════════════════
+       HERO — Bebas Neue zone
+  ═══════════════════════════════════════ -->
+  <div class="hero" id="hero">
+    <div class="hero-video-wrap">
+<iframe
+  src="https://www.youtube.com/embed/_Sl8diqCAFw?autoplay=1&mute=1&loop=1&playlist=_Sl8diqCAFw&controls=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&rel=0"
+  allow="autoplay; encrypted-media"
+  title="Hero Background Video"
+  class="hero-video">
+</iframe>
+    </div>
+    <div class="hero-gradient-bottom"></div>
+    <div class="container-fluid h-100">
+      <div class="row h-100 align-items-end">
+        <div class="col-12 col-lg-9 hero-content pb-5 ps-4 ps-md-5">
+          <div class="text-white hero-eyebrow">
+            <span class="eyebrow-line"></span>
+            <span>from concept to commissioning</span>
+          </div>
+          <h1 class="hero-heading" data-reveal>
+            <span class="reveal-line"><span class="reveal-inner">Powering Progress</span></span>
+            <!-- <span class="reveal-line"><span class="reveal-inner">Jaton power limited</span></span>
+            <span class="reveal-inner"></span>
+            <span class="reveal-line reveal-line--dim"><span class="reveal-inner">the new era of power</span></span>
+            <span class="reveal-inner"></span> -->
+            <span class="reveal-line reveal-line--dim"><span class="reveal-inner">Sustaining Tomorrow.</span></span>
+            <span class="reveal-inner"></span>
+          </h1>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator d-none d-md-flex">
+      <div class="scroll-track"><div class="scroll-thumb"></div></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       ABOUT
+  ═══════════════════════════════════════ -->
+  <div id="about">
+    <div class="about-inner">
+
+      <!-- LEFT: image with overlay -->
+      <div class="about-left">
+        <img src="css/images/Jaton-infra-2.jpeg" alt="Jatson Power Infrastructure" class="about-left-img"/>
+        <div class="about-left-overlay">
+          <div class="about-left-tag">Get to know us</div>
+          <div class="about-left-bottom">
+            <div class="about-left-founded">1998</div>
+            <div class="about-left-since">Est. · Valsad, Gujarat</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: content -->
+      <div class="about-right">
+        <svg id="abt-cables-svg" class="abt-cables-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <defs>
+            <filter id="abt-glow-r"><feGaussianBlur stdDeviation="1.2" result="b"/><feFlood flood-color="#ef4444" flood-opacity="0.6" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="abt-glow-y"><feGaussianBlur stdDeviation="1.2" result="b"/><feFlood flood-color="#facc15" flood-opacity="0.5" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="abt-glow-b"><feGaussianBlur stdDeviation="1.2" result="b"/><feFlood flood-color="#3b82f6" flood-opacity="0.5" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <path class="abt-cable abt-cable--r" id="abt-c1" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+          <path class="abt-cable abt-cable--y" id="abt-c2" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+          <path class="abt-cable abt-cable--b" id="abt-c3" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+        </svg>
+
+        <div class="about-right-top">
+          <div class="about-eyebrow">Jatson Power Limited</div>
+          <h2 class="about-heading">Driving India's Industrial<br>Transformation<br>Since 1998</h2>
+          <p class="about-body">We are committed to providing one-stop solutions and time-bound services for any industrial electrical needs. Today, JATSON has a strong workforce of over 200 dedicated team members, working tirelessly to provide comprehensive solutions with unwavering commitment.</p>
+          <div class="about-stats">
+            <div class="about-stat"><div class="about-stat-n">200+</div><div class="about-stat-l">Team Members</div></div>
+            <div class="about-stat"><div class="about-stat-n">600+</div><div class="about-stat-l">Projects</div></div>
+            <div class="about-stat"><div class="about-stat-n">26yr</div><div class="about-stat-l">Experience</div></div>
+          </div>
+        </div>
+        <div><a href="/about" class="main-button">About Us →</a></div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       TURNKEY FLOW
+  ═══════════════════════════════════════ -->
+<div class="flow-outer" id="flow-outer">
+  <div class="flow-sticky" id="flow-sticky">
+
+    <div class="flow-turnkey flow-node" id="fn-turnkey">
+      <span class="flow-turnkey-label">TURNKEY DELIVERY</span>
+      <span class="flow-turnkey-sub">Because the true measure of progress is not how much energy we use…<br>but how intelligently, efficiently, and responsibly we create it.</span>
+    </div>
+
+    <div class="flow-cards-v">
+
+      <!-- Card 1 -->
+      <div class="flow-item">
+        <div class="flow-card-v flow-node" id="fn-design">
+          <!-- <span class="flow-step-badge">01</span> -->
+          <div class="flow-thumb">
+            <img src="css/images/designing-jatson.jpeg" alt="Design" />
+          </div>
+          <div class="flow-card-text">
+            <h3 class="flow-card-title-v">Design</h3>
+            <p class="flow-card-desc-v">Load analysis, protection coordination &amp; single-line diagrams engineered from first principles.</p>
+            <a href="" class="know-more">know more</a>
+          </div>
+        </div>
+        <div class="flow-connector" id="conn-1">
+          <svg width="40" height="52" viewBox="0 0 40 52" overflow="visible">
+            <path class="connector-line" id="cline-1" d="M20 0 C20 18,20 26,20 44"/>
+            <polygon class="connector-arrow" id="carrow-1" points="20,50 14,38 26,38"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="flow-item">
+        <div class="flow-card-v flow-node" id="fn-mfg">
+          <!-- <span class="flow-step-badge">02</span> -->
+          <div class="flow-thumb">
+            <img src="css/images/maint-repair.jpg" alt="Manufacture" />
+          </div>
+          <div class="flow-card-text">
+            <h3 class="flow-card-title-v">Manufacture</h3>
+            <p class="flow-card-desc-v">Panels &amp; switchgear built in-house. Full QA at every stage — tested before it leaves the factory floor.</p>
+            <a href="" class="know-more">know more</a>
+          </div>
+        </div>
+        <div class="flow-connector" id="conn-2">
+          <svg width="40" height="52" viewBox="0 0 40 52" overflow="visible">
+            <path class="connector-line" id="cline-2" d="M20 0 C20 18,20 26,20 44"/>
+            <polygon class="connector-arrow" id="carrow-2" points="20,50 14,38 26,38"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="flow-item">
+        <div class="flow-card-v flow-node" id="fn-com">
+          <!-- <span class="flow-step-badge">03</span> -->
+          <div class="flow-thumb">
+            <img src="css/images/erection.webp" alt="Commission" />
+          </div>
+          <div class="flow-card-text">
+            <h3 class="flow-card-title-v">Commissioning</h3>
+            <p class="flow-card-desc-v">Relay testing, thermal imaging &amp; full site sign-off. We don't leave until everything is live and verified.</p>
+            <a href="" class="know-more">know more</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+ <!-- ═══════════════════════════════════════
+       SERVICES EXPERTISE GRID
+  ═══════════════════════════════════════ -->
+  <div class="services-outer" id="services-outer">
+    <div class="services" id="services">
+      <svg id="srv-cables-svg" class="srv-cables-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <filter id="srv-glow-r"><feGaussianBlur stdDeviation="1.2" result="b"/><feFlood flood-color="#ef4444" flood-opacity="1" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="srv-glow-y"><feGaussianBlur stdDeviation="1.2" result="b"/><feFlood flood-color="#facc15" flood-opacity="0.9" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="srv-glow-b"><feGaussianBlur stdDeviation="1.2" result="b"/><feFlood flood-color="#3b82f6" flood-opacity="0.9" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path class="srv-cable srv-cable--r" id="srv-c1" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+        <path class="srv-cable srv-cable--y" id="srv-c2" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+        <path class="srv-cable srv-cable--b" id="srv-c3" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+        <path id="srv-c1g" stroke="#ef4444" stroke-width="16" d="" vector-effect="non-scaling-stroke" filter="url(#srv-glow-r)" fill="none" opacity="0"/>
+        <path id="srv-c2g" stroke="#facc15" stroke-width="16" d="" vector-effect="non-scaling-stroke" filter="url(#srv-glow-y)" fill="none" opacity="0"/>
+        <path id="srv-c3g" stroke="#3b82f6" stroke-width="16" d="" vector-effect="non-scaling-stroke" filter="url(#srv-glow-b)" fill="none" opacity="0"/>
+      </svg>
+
+      <div class="container-fluid px-4 px-md-5">
+        <div class="row mb-5">
+          <div class="col-lg-8">
+            <div class="services-eyebrow t-accent mb-3"><span>- Every Jatson service is built with one promise</span></div>
+            <h2 class="services-heading" data-reveal>
+              Seamless Services, <br> delivered within precise timeline.
+            </h2>
+          </div>
+        </div>
+
+        <div class="services-grid mb-0">
+          <div class="service-card" data-animate>
+            <div class="service-card-num">SOLUTIONS</div>
+            <h3>Turnkey Project Electrification</h3>
+            <p>Complete execution from concept design to site installation for large-scale industrial segments.</p>
+          </div>
+          <div class="service-card" data-animate>
+            <div class="service-card-num">MANUFACTURING</div>
+            <h3>LT and HT Switchboards / Switchboard Retro Fitting</h3>
+            <p>CPRI-certified assemblies manufactured in our 27,000 sq. ft. facility to Siemens standards.</p>
+          </div>
+          <div class="service-card" data-animate>
+            <div class="service-card-num">AUDITING</div>
+            <h3> IoT-based Energy Management</h3>
+            <p>Authorized Gujarat State audits and real-time IoT-based energy management systems.</p>
+          </div>
+  
+  <div class="service-card" data-animate>
+    <div class="service-card-num">MAINTENANCE</div>
+    <h3>LV & MV Switchgear Life-Cycle Services</h3>
+    <p>Comprehensive preventative maintenance, contact resistance testing, and troubleshooting to ensure maximum uptime for critical power systems.</p>
+  </div>
+
+  <div class="service-card" data-animate>
+    <div class="service-card-num">TECHNOLOGY</div>
+    <h3>Government Power Infra Projects</h3>
+    <p>A centralized, real-time dashboard offering predictive load analysis, automated reporting, and remote monitoring for smart industrial facilities.</p>
+  </div>
+
+  <div class="service-card" data-animate>
+    <div class="service-card-num">CONSULTANCY</div>
+    <h3> Energy Audits & switchboard servicing</h3>
+    <p>Advanced diagnostic services to identify voltage fluctuations and harmonics, improving equipment longevity and ensuring compliance with utility standards.</p>
+  </div>
+
+        </div>
+
+        <div class="stat-band">
+          <div class="stat-item" data-animate><div class="stat-n">26+</div><div class="stat-l">Years Legacy</div></div>
+          <div class="stat-item" data-animate><div class="stat-n">6000A</div><div class="stat-l">CPRI Capacity</div></div>
+          <div class="stat-item" data-animate><div class="stat-n">12kV</div><div class="stat-l">Panel Range</div></div>
+          <div class="stat-item" data-animate><div class="stat-n">200+</div><div class="stat-l">Experts</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ═══════════════════════════════════════
+       SERVICES HORIZONTAL SCROLL
+  ═══════════════════════════════════════ -->
+  <div id="horizontal-scoll">
+    <div class="svc-intro">
+      <div class="svc-intro-inner row d-flex justify-content-between align-items-end p-0">
+        <div class="col-lg-5">
+          <p class="eyebrow eyebrow--dark t-accent">
+            <span class="eyebrow-line"></span>
+            <span>We don’t just power industries.</span>
+          </p>
+          <h2 class="svc-intro-heading t-heading" data-reveal>
+            <span class="reveal-line"><span class="reveal-inner">We Power the Nation's Progress.</span></span>
+          </h2>
+        </div>
+        <div class="col-lg-4">
+          <p class="svc-intro-desc t-body">
+            From high-voltage design and panel fabrication to site commissioning and long-term maintenance — every service we offer is engineered for reliability, built to specification, and delivered by specialists who understand industrial power.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="horizontal-scoll-wrapper">
+      <div class="horizontal">
+
+        <div><div class="card"><div class="svc-card-img" data-num="01"><img src="css/images/turnkey-project-electrification.jpeg" alt="Turnkey"/></div><div class="svc-card-body"><span class="card-num">01 — Solutions</span><h4 class="t-card-heading">Turnkey Project Electrification</h4><p class="t-body">GETCO-approved vendor for 66kV underground cabling and switchyard erection. End-to-end execution from design to final site commissioning.</p></div></div></div>
+
+        <div><div class="card"><div class="svc-card-img" data-num="02"><img src="css/images/02 panel.png" alt="Switchboard"/></div><div class="svc-card-body"><span class="card-num">02 — Build</span><h4 class="t-card-heading">LV & MV Switchboards</h4><p class="t-body">CPRI-certified LT/HT switchboards and Siemens SIEPAN 8PU type-tested assemblies manufactured in our 27,000 sq. ft. facility.</p></div></div></div>
+
+        <div><div class="card"><div class="svc-card-img" data-num="03"><img src="css/images/switchboard-retro-fitting.jpg" alt="Retrofitting"/></div><div class="svc-card-body"><span class="card-num">03 — Retrofit</span><h4 class="t-card-heading">Switchboard Retro Fitting</h4><p class="t-body">25+ years of expertise in upgrading aging circuits and switchgear to modern electronic trip units for enhanced protection coordination.</p></div></div></div>
+
+        <div><div class="card"><div class="svc-card-img" data-num="04"><img src="css/images/energy-conservation-audit.jpg" alt="Energy"/></div><div class="svc-card-body"><span class="card-num">04 — Audit</span><h4 class="t-card-heading">Energy Conservation & Audits</h4><p class="t-body">Authorized Gujarat State electrical and thermal audits using modern diagnostic tools to provide viable energy-saving solutions.</p></div></div></div>
+
+        <div><div class="card"><div class="svc-card-img" data-num="05"><img src="css/images/maintenance.webp" alt="Maintenance"/></div><div class="svc-card-body"><span class="card-num">05 — Maintenance</span><h4 class="t-card-heading">LV & MV Maintenance</h4><p class="t-body">Specialized shutdown maintenance, busbar inspection, and air circuit breaker servicing to ensure zero failures during peak loads.</p></div></div></div>
+
+        <div><div class="card"><div class="svc-card-img" data-num="06"><img src="css/images/digitalisation.jpg" alt="Digitalization"/></div><div class="svc-card-body"><span class="card-num">06 — Digitalize</span><h4 class="t-card-heading">Plant / Factory Digitalization</h4><p class="t-body">Transitioning facilities to Industry 4.0 through IoT/IIoT platforms and the implementation of intelligent iMCC Switchboards.</p></div></div></div>
+
+        <div><div class="card"><div class="svc-card-img" data-num="07"><img src="css/images/power-quality-solution.webp" alt="Power Quality"/></div><div class="svc-card-body"><span class="card-num">07 — Quality</span><h4 class="t-card-heading">Power Quality Solutions</h4><p class="t-body">Comprehensive audits to correct power factor to unity and mitigate voltage sags, ensuring clean power and lower electricity bills.</p></div></div></div>
+
+        <div><div class="card"><div class="svc-card-img" data-num="08"><img src="css/images/harmonics-audit.png" alt="Harmonics"/></div><div class="svc-card-body"><span class="card-num">08 — Analyze</span><h4 class="t-card-heading">Harmonics Audits</h4><p class="t-body">Detailed analysis of VFD-induced distortions to size APFCs/AHFs, ensuring the health of sensitive semiconductor components.</p></div></div></div>
+
+        <div><div class="card"><div class="svc-card-img" data-num="09"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600" alt="SaaS"/></div><div class="svc-card-body"><span class="card-num">09 — SaaS</span><h4 class="t-card-heading">Energy Analytics (EMAS)</h4><p class="t-body">ISO 50001-based SaaS platform for real-time energy monitoring, analytics, and reporting via integrated IoT software.</p></div></div></div>
+
+        <div><div class="card"><div class="svc-card-img" data-num="10"><img src="css/images/switchgear-servicing.jpg" alt="Switchgear"/></div><div class="svc-card-body"><span class="card-num">10 — Servicing</span><h4 class="t-card-heading">Switchgear & Panel Servicing</h4><p class="t-body">Expert cleaning, lubrication, and wiring simulation for all panel cubicles to avoid hazardous conditions and financial losses.</p></div></div></div>
+
+        <div><div class="card"><div class="svc-card-img" data-num="11"><img src="css/images/preventive-maintenance.webp" alt="Preventive"/></div><div class="svc-card-body"><span class="card-num">11 — Prevent</span><h4 class="t-card-heading">Preventive Maintenance</h4><p class="t-body">Routine scheduled maintenance for transformers and substation equipment to reduce chances of costly unplanned machine downtime.</p></div></div></div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       THREE-PHASE CABLES
+  ═══════════════════════════════════════ -->
+  <div class="cables-outer" id="cables-outer">
+    <div class="cables-sticky" id="cables-sticky">
+      <svg id="cables-svg" class="cables-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <filter id="glow-r"><feGaussianBlur stdDeviation="1.2" result="b"/><feFlood flood-color="#ef4444" flood-opacity="1" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow-y"><feGaussianBlur stdDeviation="1.2" result="b"/><feFlood flood-color="#facc15" flood-opacity="0.9" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow-b"><feGaussianBlur stdDeviation="1.2" result="b"/><feFlood flood-color="#3b82f6" flood-opacity="0.9" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path class="cable cable--r" id="lc1" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+        <path class="cable cable--y" id="lc2" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+        <path class="cable cable--b" id="lc3" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+        <path class="cable cable--r" id="rc1" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+        <path class="cable cable--y" id="rc2" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+        <path class="cable cable--b" id="rc3" stroke-width="20" d="" vector-effect="non-scaling-stroke"/>
+        <path class="cable-glow" id="lc1g" stroke="#ef4444" stroke-width="16" d="" vector-effect="non-scaling-stroke" filter="url(#glow-r)" opacity="0"/>
+        <path class="cable-glow" id="lc2g" stroke="#facc15" stroke-width="16" d="" vector-effect="non-scaling-stroke" filter="url(#glow-y)" opacity="0"/>
+        <path class="cable-glow" id="lc3g" stroke="#3b82f6" stroke-width="16" d="" vector-effect="non-scaling-stroke" filter="url(#glow-b)" opacity="0"/>
+        <path class="cable-glow" id="rc1g" stroke="#ef4444" stroke-width="16" d="" vector-effect="non-scaling-stroke" filter="url(#glow-r)" opacity="0"/>
+        <path class="cable-glow" id="rc2g" stroke="#facc15" stroke-width="16" d="" vector-effect="non-scaling-stroke" filter="url(#glow-y)" opacity="0"/>
+        <path class="cable-glow" id="rc3g" stroke="#3b82f6" stroke-width="16" d="" vector-effect="non-scaling-stroke" filter="url(#glow-b)" opacity="0"/>
+      </svg>
+
+      <div class="cables-center" id="cables-center">
+        <div class="cables-left">
+  <div class="cables-panel">
+  <div class="panel-glow" id="panel-glow"></div>
+  <img src="css/images/02 panel.png" alt="JATSON Panel" class="panel-img" id="panel-img"/>
+  <img src="css/images/01 panel.png" alt="JATSON Panel Active" class="panel-img panel-img--alt" id="panel-img-alt"/>
+</div>
+        </div>
+        <div class="cables-right">
+          <p class="cables-eyebrow">Powered by</p>
+          <h2 class="cables-title">
+            <span class="cables-title--accent cables-title--r" id="ct-r">Trust.</span>
+            <span class="cables-title--accent cables-title--y" id="ct-y">Expertise.</span>
+            <span class="cables-title--accent cables-title--b" id="ct-b">Reliability.</span>
+          </h2>
+          <div class="col-lg-8">
+            <p class="cables-sub t-body" id="cables-sub">Over two decades of field experience back every project we take on. From load-centre design to live commissioning, our team brings unmatched depth to industrial electrical systems.</p>
+          </div>
+          <a href="" class="main-button">All Products</a>
+        </div>
+      </div>
+
+      <div class="phase-labels" id="phase-labels">
+        <div class="phase-label phase-label--r" id="pl-r"><span class="phase-dot-indicator"></span><span>Phase R</span></div>
+        <div class="phase-label phase-label--y" id="pl-y"><span class="phase-dot-indicator"></span><span>Phase Y</span></div>
+        <div class="phase-label phase-label--b" id="pl-b"><span class="phase-dot-indicator"></span><span>Phase B</span></div>
+      </div>
+    </div>
+  </div>
+
+
+ 
+
+
+  <!-- ═══════════════════════════════════════
+       PRODUCTS GALLERY
+  ═══════════════════════════════════════ -->
+  <div class="gallery-header">
+    <div class="container-fluid px-5">
+      <div class="gallery-eyebrow">JATSON POWER</div>
+      <h2 class="gallery-title">RANGE OF PRODUCTS</h2>
+    </div>
+  </div>
+
+  <section class="gallery-section">
+    <div class="container-fluid px-0">
+      <div class="row g-0">
+        <div class="col-lg-1 col-nums" id="numCol"><div class="num-list" id="numList"></div></div>
+        <div class="col-lg-7 col-images" id="imgCol"></div>
+        <div class="col-lg-4 col-descs" id="descCol"><div class="desc-track" id="descTrack"></div></div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════
+         PROJECTS
+    ═══════════════════════════════════════ -->
+    <div class="container-fluid p-0 project-terminal-section">
+      <div class="row g-0">
+        <div class="col-lg-5 d-flex flex-column justify-content-center p-5 bg-navy border-end" style="border-color: rgba(255,255,255,0.06) !important;">
+          <span class="t-accent mb-4" style="color:var(--accent);">Industrial Portfolio</span>
+          <h2 class="t-heading t-heading--light mb-5">Current<br/>Installations</h2>
+
+          <div class="project-nav-list">
+            <div class="nav-item-1 active" data-project="reliance">
+              <span class="nav-num">01</span>
+              <div class="nav-info"><h4>Chemical Industry</h4><p>11kV Substation & GIS</p></div>
+            </div>
+            <div class="nav-item-1" data-project="gsecl">
+              <span class="nav-num">02</span>
+              <div class="nav-info"><h4>GSECL</h4><p>Pharma Industry</p></div>
+            </div>
+            <div class="nav-item-1" data-project="adani">
+              <span class="nav-num">03</span>
+              <div class="nav-info"><h4>Food & Packaging</h4><p>MCC Panel Suite</p></div>
+            </div>
+            <div class="nav-item-1" data-project="ongc">
+              <span class="nav-num">04</span>
+              <div class="nav-info"><h4>Intermediates
+</h4><p>HT Cable Network</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7 project-stage">
+          <div class="project-view active" id="reliance">
+            <img src="css/images/project_01.jpg" alt="Reliance">
+            <div class="stage-overlay"><div class="spec-grid"><div class="spec-item"><span>Voltage</span><strong>11kV / 20MVA</strong></div><div class="spec-item"><span>Status</span><strong>Operational</strong></div></div><p class="t-body" style="color:rgba(255,255,255,0.72); margin-top:14px;">Turnkey design and commissioning for Jamnagar complex.</p></div>
+          </div>
+          <div class="project-view" id="gsecl">
+            <img src="css/images/project_02.avif" alt="GSECL">
+            <div class="stage-overlay"><div class="spec-grid"><div class="spec-item"><span>Scope</span><strong>14 Feeders</strong></div><div class="spec-item"><span>Plant</span><strong>Wanakbori</strong></div></div><p class="t-body" style="color:rgba(255,255,255,0.72); margin-top:14px;">Complete overhaul of low-tension distribution network.</p></div>
+          </div>
+          <div class="project-view" id="adani">
+            <img src="css/images/project_03.avif" alt="Adani">
+            <div class="stage-overlay"><div class="spec-grid"><div class="spec-item"><span>Panels</span><strong>24-Unit MCC</strong></div><div class="spec-item"><span>Location</span><strong>Mundra Port</strong></div></div><p class="t-body" style="color:rgba(255,255,255,0.72); margin-top:14px;">Fabrication and installation for heavy-duty crane operations.</p></div>
+          </div>
+          <div class="project-view" id="ongc">
+            <img src="css/images/proejct_04.jpg" alt="ONGC">
+            <div class="stage-overlay"><div class="spec-grid"><div class="spec-item"><span>Distance</span><strong>4.2 KM</strong></div><div class="spec-item"><span>Type</span><strong>High Tension</strong></div></div><p class="t-body" style="color:rgba(255,255,255,0.72); margin-top:14px;">Sub-sea and saline terrain HT cable jointing and laying.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       PARTNERS
+  ═══════════════════════════════════════ -->
+  <section class="brand-partners py-100" id="partners">
+    <div class="container-xxl p-5">
+      <div class="text-center mb-5">
+        <span class="t-accent d-flex align-items-center justify-content-center gap-2 mb-2">
+          <span class="line-accent"></span> Strategic Alliance
+        </span>
+        <h2 class="t-heading text-center" style="  font-size: clamp(34px, 5vw, 70px);
+">Our Trusted Partners</h2>
+        <p class="t-body mx-auto opacity-60 max-w-600">World-class hardware integration for precision-engineered turnkey solutions.</p>
+      </div>
+
+      <div class="partner-grid">
+        <div class="partner-main">
+          <div class="partner-card primary">
+            <span class="partner-cat">Principal Partner</span>
+            <div class="logo-box"><img src="css/images/partner-1.png" alt="Siemens"></div>
+            <h3>Licensed Partner</h3>
+            <p class="t-body">Manufacture and assembly of SIEPAN 8 PU Low Voltage Switchboards.</p>
+          </div>
+          <div class="partner-card primary">
+            <span class="partner-cat">Systems Integrator</span>
+            <div class="logo-box"><img src="css/images/partner-2.png" alt="ABB"></div>
+            <h3>System House</h3>
+            <p class="t-body">Authorized partner for advanced power distribution and motor control.</p>
+          </div>
+        </div>
+        <div class="partner-sub">
+          <div class="partner-card secondary">
+            <div class="logo-box-sm"><img src="css/images/partner-3.png" alt="Partner 3"></div>
+            <h4>Authorized Partner</h4>
+            <p class="t-body">Industrial automation component integration.</p>
+          </div>
+          <div class="partner-card secondary">
+            <div class="logo-box-sm"><img src="css/images/partner-4.png" alt="Partner 4"></div>
+            <h4>Energy Management</h4>
+            <p class="t-body">EcoStruxure power monitoring implementation.</p>
+          </div>
+          <div class="partner-card secondary">
+            <div class="logo-box-sm"><img src="css/images/partner-5.png" alt="Partner 5"></div>
+            <h4>Authorized Integrator</h4>
+            <p class="t-body">Certified technical field installation partner.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       CLIENTS MARQUEE
+  ═══════════════════════════════════════ -->
+  <div class="container-fluid p-0">
+    <section class="clients-section">
+      <p class="t-accent" style="text-align:center; margin-bottom:8px;">Trusted by the best</p>
+      <h2 style="  font-size: clamp(34px, 5vw, 70px);
+">Our Valued Clients</h2>
+      <div class="marquee-wrapper">
+        <div class="marquee-track" id="marqueeTrack"></div>
+      </div>
+      <div class="clients-cta"><a href="/clients">View all clients &rarr;</a></div>
+    </section>
+  </div>
+
+  
+
+  <!-- ═══════════════════════════════════════
+        convergence
+  ═══════════════════════════════════════ -->
+<!-- <div class="converge-outer" id="converge-outer">
+  <div class="converge-sticky" id="converge-sticky">
+    
+    <svg id="converge-svg" class="converge-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path class="cable cable--r" id="lh1" stroke-width="8" d="" vector-effect="non-scaling-stroke"/>
+      <path class="cable cable--y" id="lh2" stroke-width="8" d="" vector-effect="non-scaling-stroke"/>
+      <path class="cable cable--b" id="lh3" stroke-width="8" d="" vector-effect="non-scaling-stroke"/>
+      
+      <path class="cable cable--r" id="rh1" stroke-width="8" d="" vector-effect="non-scaling-stroke"/>
+      <path class="cable cable--y" id="rh2" stroke-width="8" d="" vector-effect="non-scaling-stroke"/>
+      <path class="cable cable--b" id="rh3" stroke-width="8" d="" vector-effect="non-scaling-stroke"/>
+    </svg>
+
+    <div class="converge-center-content">
+      <div class="converge-text-block" id="converge-text-block">
+        <h2 class="converge-title">Integrated Solutions</h2>
+        <p class="converge-sub t-body">Precision engineering meets industrial-grade reliability. Systems built to converge for maximum efficiency.</p>
+      </div>
+
+      <div class="converge-panel">
+        <div class="panel-glow-hit" id="panel-glow-hit"></div>
+        <img src="css/logo.png" alt="Center Panel" class="converge-img" id="converge-img"/>
+      </div>
+    </div>
+
+  </div>
+</div> -->
+
+  <!-- ═══════════════════════════════════════
+       CONTACT
+  ═══════════════════════════════════════ -->
+  <div class="page-main">
+    <div class="page-form-panel">
+      <p class="form-section-label">Email Us</p>
+      <h2>Send a<br>Message</h2>
+      <p class="form-note">Your email address will not be published. Required fields are marked <span>*</span></p>
+
+      <form id="contactForm" novalidate>
+        <div class="field-grid">
+          <div class="field-row"><label>Your Name <span>*</span></label><input type="text" name="name" placeholder="Your Name" required/></div>
+          <div class="field-row"><label>Your Email <span>*</span></label><input type="email" name="email" placeholder="Email Address" required/></div>
+        </div>
+        <div class="field-grid">
+          <div class="field-row"><label>Phone Number <span>*</span></label><input type="tel" name="phone" placeholder="E.g. +91 98251 13093"/></div>
+          <div class="field-row">
+            <label>Department <span>*</span></label>
+            <select name="department"><option value="HR">HR</option><option value="Sales">Sales</option><option value="Technical">Technical</option><option value="General">General Enquiry</option></select>
+          </div>
+        </div>
+        <div class="file-upload-row">
+          <label>Upload File <span>*</span></label>
+          <div class="file-upload-wrap">
+            <button type="button" class="file-btn" onclick="document.getElementById('fileInput').click()">Choose File</button>
+            <span class="file-name" id="fileName">No file chosen</span>
+            <input type="file" id="fileInput" name="file" accept=".pdf,.doc,.docx,.jpg,.png"/>
+          </div>
+        </div>
+        <div class="field-row">
+          <label>Message <span>*</span></label>
+          <div class="textarea-wrap">
+            <textarea name="message" id="messageArea" placeholder="Enter your message..." maxlength="180" required></textarea>
+            <span class="char-count"><span id="charCount">0</span> / 180</span>
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">
+          <span>Send Question</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <div class="page-info-panel">
+      <h2 class="info-panel-heading">Let's Connect</h2>
+      <p class="info-panel-desc">JATSON is an integrated solution provider for Industrial Electrification, offering Turnkey Electrical Installation, manufacturing of various types of Low Voltage and Medium Voltage Switchboards. Also provide services of Energy Audit.</p>
+      <p class="info-panel-desc">To talk to our professional regarding project, estimates or more. Get in touch with us.</p>
+      <div class="info-divider"></div>
+
+      <div class="page-item">
+        <div class="page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+        <div class="page-item-body"><p class="page-item-label">Our Address</p><p class="page-item-text">Survey no. - 1045/1046, NH-48, Dhamdachi Road,<br>village-Dhamdachi, Valsad - 396035</p></div>
+      </div>
+      <div class="page-item">
+        <div class="page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 7 10-7"/></svg></div>
+        <div class="page-item-body"><p class="page-item-label">Sales</p><div class="page-item-title">Sales</div><p class="page-item-text">sales@jatson.com<br><a href="tel:+919825113093">+91 98251 13093</a></p></div>
+      </div>
+      <div class="page-item">
+        <div class="page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 7 10-7"/></svg></div>
+        <div class="page-item-body"><p class="page-item-label">Human Resources</p><div class="page-item-title">HR</div><p class="page-item-text">hr@jatson.com<br><a href="tel:+917567831117">+91 75678 31117</a></p></div>
+      </div>
+      <div class="page-item">
+        <div class="page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="13" x2="14" y2="13"/></svg></div>
+        <div class="page-item-body"><p class="page-item-label">Company Identification</p><div class="page-item-title">CIN</div><p class="page-item-text">U31103GJ2004PTC044090</p></div>
+      </div>
+
+      <div class="social-row">
+        <a href="#" class="social-btn" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" class="social-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="#" class="social-btn" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#14192e"/></svg></a>
+        <a href="#" class="social-btn" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="#" class="social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="#14192e"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#14192e" stroke-width="2"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/page.js"></script>
+  <script src="js/reveal-universal.js"></script>
+</body>
+</html>

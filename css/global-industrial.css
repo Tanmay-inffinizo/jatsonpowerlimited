@@ -1,0 +1,677 @@
+/* footer*/
+
+
+/* ── 2. PAGE HERO ─────────────────────────────────────────────── */
+.page-hero {
+  background: var(--navy);
+  padding: clamp(120px, 15vw, 200px) 0 clamp(60px, 8vw, 100px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Radial accent glow */
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 80% at 80% 50%, rgba(230, 51, 41, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Decorative watermark */
+.page-hero::after {
+  content: 'Jatson';
+  font-family: var(--font-display);
+  font-size: clamp(200px, 30vw, 420px);
+  color: rgba(242, 240, 235, 0.025);
+  position: absolute;
+  right: -2%;
+  top: 80%;
+  transform: translateY(-50%);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.page-hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-main);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.eyebrow-line {
+  display: inline-block;
+  width: 36px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.page-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 5vw, 70px);
+  color: var(--white);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.page-hero h1 span { color: var(--accent); }
+
+.page-hero-sub {
+  font-family: var(--font-main);
+  font-size: var(--t-md);
+  font-weight: 300;
+  color: var(--white);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+
+/* ── 3. SECTION SPACING ───────────────────────────────────────── */
+.section-padding {
+  padding-top: var(--section-pad);
+  padding-bottom: var(--section-pad);
+}
+
+.section-padding-sm {
+  padding-top:    calc(var(--section-pad) * 0.6);
+  padding-bottom: calc(var(--section-pad) * 0.6);
+}
+
+
+/* ── 4. SECTION LABEL / EYEBROW ───────────────────────────────── */
+.section-eyebrow {
+  font-family: var(--font-main);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.section-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.section-eyebrow.inv                { color: rgba(230, 51, 41, 0.85); }
+.section-eyebrow.inv::before        { background: rgba(230, 51, 41, 0.6); }
+
+.section-heading {
+  font-family: var(--font-display);
+  font-size: var(--t-xl);
+  color: var(--navy);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.section-heading.inv { color: var(--white); }
+
+.section-body {
+  font-family: var(--font-main);
+  font-size: var(--t-body);
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 600px;
+}
+
+.section-body.inv { color: var(--muted-inv); }
+
+
+/* ── 5. CONTENT CARD ──────────────────────────────────────────── */
+.content-card {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: clamp(28px, 3.5vw, 48px);
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 0.35s var(--ease-out),
+    transform    0.35s var(--ease-out),
+    box-shadow   0.35s var(--ease-out);
+}
+
+.content-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--accent-dim) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.content-card:hover {
+  border-color: rgba(230, 51, 41, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(20, 25, 46, 0.10);
+}
+
+.content-card:hover::before { opacity: 1; }
+
+/* Dark variant */
+.content-card.dark {
+  background: var(--navy-mid);
+  border-color: var(--border-light);
+}
+
+.content-card.dark:hover { border-color: rgba(230, 51, 41, 0.4); }
+
+
+/* ── 6. BRAND BUTTON ──────────────────────────────────────────── */
+.brand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-main);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: var(--navy);
+  color: var(--white);
+  border: 1px solid var(--navy);
+  padding: 15px 34px;
+  cursor: pointer;
+  transition:
+    background    0.25s ease,
+    color         0.25s ease,
+    transform     0.2s ease,
+    border-color  0.25s ease;
+}
+
+.brand-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.brand-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateX(3px);
+  color: var(--white);
+}
+
+.brand-btn:hover svg { transform: translateX(3px); }
+
+/* Outline — on light bg */
+.brand-btn.outline {
+  background: transparent;
+  color: var(--navy);
+  border-color: var(--navy);
+}
+
+.brand-btn.outline:hover {
+  background: var(--navy);
+  color: var(--white);
+}
+
+/* Outline — on dark bg */
+.brand-btn.outline-inv {
+  background: transparent;
+  color: var(--white);
+  border-color: rgba(242, 240, 235, 0.35);
+}
+
+.brand-btn.outline-inv:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+
+/* ── 7. DIVIDER ───────────────────────────────────────────────── */
+.jatson-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 48px 0;
+}
+
+.jatson-divider.inv { background: var(--border-light); }
+
+
+/* ── 8. STAT BLOCK ────────────────────────────────────────────── */
+.stat-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 72px);
+  color: var(--navy);
+  line-height: 1;
+}
+
+.stat-num.inv     { color: var(--white); }
+.stat-num span    { color: var(--accent); }
+
+.stat-label {
+  font-family: var(--font-main);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stat-label.inv { color: var(--muted-inv); }
+
+
+/* ── 9. IMAGE PLACEHOLDER ─────────────────────────────────────── */
+.img-placeholder {
+  width: 100%;
+  background: linear-gradient(135deg, var(--navy-light) 0%, var(--navy) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.img-placeholder::after {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-main);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(242, 240, 235, 0.2);
+}
+
+.img-placeholder.ratio-4-3  { aspect-ratio: 4/3; }
+.img-placeholder.ratio-16-9 { aspect-ratio: 16/9; }
+.img-placeholder.ratio-1-1  { aspect-ratio: 1/1; }
+.img-placeholder.ratio-3-4  { aspect-ratio: 3/4; }
+
+
+/* ── 10. DARK SECTION WRAPPER ─────────────────────────────────── */
+.dark-section {
+  background: var(--navy);
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 90% 10%, rgba(230, 51, 41, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+
+/* ── 11. TECH SPEC ROW ────────────────────────────────────────── */
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-family: var(--font-main);
+}
+
+.spec-row:first-child { border-top: 1px solid var(--border-light); }
+
+.spec-key {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-inv);
+}
+
+.spec-val {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  color: var(--white);
+}
+
+
+/* ── 12. TAG / BADGE ──────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-main);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: transparent;
+}
+
+.tag.accent { border-color: var(--accent); color: var(--accent); }
+.tag.inv    { border-color: var(--border-light); color: var(--muted-inv); }
+
+
+/* ── 13. LOGO TILE ────────────────────────────────────────────── */
+.logo-tile {
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 2.4/1;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.logo-tile::after {
+  content: attr(data-company);
+  font-family: var(--font-main);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(242, 240, 235, 0.28);
+  transition: color 0.3s ease;
+}
+
+.logo-tile:hover {
+  background: rgba(242, 240, 235, 0.04);
+  border-color: rgba(230, 51, 41, 0.3);
+}
+
+.logo-tile:hover::after { color: rgba(242, 240, 235, 0.55); }
+
+
+/* ── 14. TESTIMONIAL CARD ─────────────────────────────────────── */
+.testimonial-card {
+  border-left: 3px solid var(--accent);
+  padding: 32px 32px 32px 36px;
+  background: var(--navy-mid);
+  position: relative;
+}
+
+.testimonial-quote {
+  font-family: var(--font-main);
+  font-size: var(--t-md);
+  font-weight: 300;
+  color: rgba(242, 240, 235, 0.80);
+  line-height: 1.75;
+  font-style: italic;
+  margin-bottom: 24px;
+}
+
+.testimonial-author {
+  font-family: var(--font-main);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.testimonial-role {
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--muted-inv);
+  margin-top: 4px;
+}
+
+
+/* ── 15. LEADERSHIP CARD ──────────────────────────────────────── */
+.leader-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.leader-card .img-placeholder { aspect-ratio: 3/4; }
+
+.leader-card-body { padding: 20px 0 0; }
+
+.leader-name {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.2vw, 28px);
+  color: var(--white);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.leader-title {
+  font-family: var(--font-main);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+
+/* ── 16. SERVICE CARD ICON ────────────────────────────────────── */
+.svc-icon-wrap {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-light);
+  margin-bottom: 24px;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.svc-icon-wrap svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.content-card:hover .svc-icon-wrap {
+  background: var(--accent-dim);
+  border-color: rgba(230, 51, 41, 0.3);
+}
+
+.svc-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.4vw, 30px);
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  margin-bottom: 12px;
+}
+
+.svc-body {
+  font-family: var(--font-main);
+  font-size: var(--t-sm);
+  font-weight: 300;
+  color: var(--muted-inv);
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+
+.svc-read-more {
+  font-family: var(--font-main);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.svc-read-more svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+.content-card:hover .svc-read-more {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* ── 17. PRODUCT CARD ─────────────────────────────────────────── */
+.product-card {
+  background: var(--navy-mid);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  border-color: rgba(230, 51, 41, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.product-card-body { padding: 24px; }
+
+.product-cat-tag {
+  font-family: var(--font-main);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.product-name {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 26px);
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.product-desc {
+  font-family: var(--font-main);
+  font-size: var(--t-sm);
+  font-weight: 300;
+  color: var(--muted-inv);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+
+/* ── 18. FADE-UP ANIMATION ────────────────────────────────────── */
+/* JS toggles .visible (contact page) or .revealed (other pages) */
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity   0.75s var(--ease-out),
+    transform 0.75s var(--ease-out);
+}
+
+.fade-up.visible,
+.fade-up.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ── 19. NAV SCROLLED STATE ───────────────────────────────────── */
+/* JS adds .scrolled to #site-nav — these are the fallback rules.
+   style.css / style-2.css have the definitive per-page overrides. */
+
+
+/* ── 20. MAP STRIP ────────────────────────────────────────────── */
+.map-strip {
+  position: relative;
+  height: clamp(260px, 32vw, 420px);
+  overflow: hidden;
+}
+
+.map-strip iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: grayscale(0.55) contrast(1.1);
+}
+
+.map-strip-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(20, 25, 46, 0.82) 0%, rgba(20, 25, 46, 0.10) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+.map-strip-label {
+  position: absolute;
+  left: clamp(32px, 5vw, 80px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.map-strip-label p {
+  font-family: var(--font-main);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.map-strip-label h3 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 48px);
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+
+/* ── 21. RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 991px) {
+  .page-hero::after { display: none; }
+}
+
+@media (max-width: 767px) {
+  .page-hero        { padding-top: clamp(100px, 20vw, 140px); }
+  .section-padding  { padding-top: 64px; padding-bottom: 64px; }
+  .brand-btn        { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 575px) {
+  .page-hero h1  { line-height: 0.9; }
+  .content-card  { padding: 24px; }
+  .map-strip     { height: 280px; }
+}

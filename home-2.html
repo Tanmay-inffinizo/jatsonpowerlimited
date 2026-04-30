@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>JATSON — Improved Sections Preview</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <style>
+/* ═══════════════════════════════════════
+   DESIGN SYSTEM (unchanged tokens)
+═══════════════════════════════════════ */
+:root {
+  --navy:      #14192e;
+  --navy-mid:  #1f2843;
+  --bg:        #ffffff;
+  --accent:    #d91f1f;
+  --white:     #ffffff;
+  --off-white: #f2f0eb;
+  --muted:     rgba(20,25,46,0.48);
+  --border:    rgba(20,25,46,0.10);
+
+  --t-display: clamp(52px, 7.5vw, 90px);
+  --t-heading: 22px;
+  --t-body:    15px;
+  --t-label:   11px;
+
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'Space Mono', monospace;
+
+  --ease-out:  cubic-bezier(0.16, 1, 0.30, 1);
+  --section-pad: clamp(80px, 10vw, 130px);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Type helpers ── */
+.t-display  { font-family: var(--font-display); font-size: var(--t-display); font-weight: 400; line-height: 0.90; letter-spacing: 0.02em; color: var(--navy); }
+.t-heading  { font-family: var(--font-body); font-size: var(--t-heading); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; color: var(--navy); }
+.t-body     { font-family: var(--font-body); font-size: var(--t-body); font-weight: 300; line-height: 1.75; color: var(--muted); }
+.t-label    { font-family: var(--font-mono); font-size: var(--t-label); font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+.t-accent   { color: var(--accent); }
+
+.eyebrow { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.eyebrow-line { display: inline-block; width: 28px; height: 1px; background: currentColor; flex-shrink: 0; }
+
+.know-more {
+  font-family: var(--font-mono); font-size: var(--t-label); letter-spacing: 0.18em;
+  color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  transition: gap 0.3s var(--ease-out);
+}
+.know-more:hover { gap: 14px; }
+.know-more::after { content: '→'; }
+
+.main-button {
+  font-family: var(--font-mono); font-size: var(--t-label); letter-spacing: 0.18em;
+  background: transparent; color: var(--navy); padding: 12px 28px;
+  border: 1px solid var(--navy); cursor: pointer; position: relative; overflow: hidden;
+  display: inline-block; text-align: center; text-decoration: none; transition: color 0.3s ease;
+}
+.main-button::before {
+  content: ''; position: absolute; left: -100%; top: 0;
+  height: 100%; width: 100%; background: var(--navy); z-index: -1;
+  transition: left 0.3s var(--ease-out);
+}
+.main-button:hover::before { left: 0; }
+.main-button:hover { color: var(--white); }
+.main-button--light { color: var(--white); border-color: rgba(242,240,235,0.35); }
+.main-button--light::before { background: var(--white); }
+.main-button--light:hover { color: var(--navy); }
+
+/* ══════════════════════════════════════════════
+   SECTION SEPARATOR — nav label between sections
+══════════════════════════════════════════════ */
+.section-sep {
+  font-family: var(--font-mono);
+  font-size: 9px; letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(20,25,46,0.18);
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.section-sep--dark {
+  color: rgba(242,240,235,0.15);
+  border-color: rgba(242,240,235,0.07);
+  background: var(--navy);
+}
+
+
+
+/* ══════════════════════════════════════════════
+   1. ABOUT — Redesigned
+   Layout: Bold left stat column + right paragraph column
+   + large background counter (year founded)
+══════════════════════════════════════════════ */
+#about {
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Ghost year watermark */
+#about::before {
+  content: "1998";
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: clamp(180px, 22vw, 320px);
+  color: var(--navy);
+  opacity: 0.03;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  letter-spacing: 0.1em;
+}
+
+.about-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+/* ── Left panel — image + eyebrow ── */
+.about-left {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+}
+
+.about-left-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  filter: brightness(0.55) saturate(0.4);
+  transition: transform 0.8s var(--ease-out), filter 0.6s ease;
+}
+.about-left:hover .about-left-img {
+  transform: scale(1.04);
+  filter: brightness(0.65) saturate(0.65);
+}
+
+/* Overlay content on the image */
+.about-left-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px;
+  z-index: 2;
+}
+
+.about-left-tag {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(242,240,235,0.4);
+  display: flex; align-items: center; gap: 10px;
+}
+.about-left-tag::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 1px;
+  background: var(--accent);
+}
+
+.about-left-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.about-left-founded {
+  font-family: var(--font-display);
+  font-size: clamp(60px, 7vw, 100px);
+  color: var(--white);
+  line-height: 0.85;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+.about-left-since {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  color: var(--accent);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+/* ── Right panel — content ── */
+.about-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(48px, 7vw, 96px);
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+}
+
+.about-right-top {}
+
+.about-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 28px;
+}
+.about-eyebrow::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--accent);
+  display: inline-block;
+}
+
+.about-heading {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.5vw, 68px);
+  color: var(--navy);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 36px;
+}
+
+.about-body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 480px;
+  margin-bottom: 40px;
+}
+
+/* Mini stat row */
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  margin-bottom: 44px;
+}
+
+.about-stat {
+  padding: 24px 20px;
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+.about-stat:last-child { border-right: none; }
+.about-stat:hover { background: rgba(20,25,46,0.03); }
+
+.about-stat::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 0; height: 2px;
+  background: var(--accent);
+  transition: width 0.5s var(--ease-out);
+}
+.about-stat:hover::before { width: 100%; }
+
+.about-stat-n {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.2vw, 46px);
+  color: var(--navy);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.about-stat-l {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@media (max-width: 991px) {
+  .about-inner { grid-template-columns: 1fr; }
+  .about-left { min-height: 50vw; }
+  .about-right { border-left: none; border-top: 1px solid var(--border); }
+  .about-stats { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 575px) {
+  .about-stats { grid-template-columns: 1fr 1fr; }
+  .about-stat:nth-child(2) { border-right: none; }
+  .about-stat:nth-child(3) { border-right: none; border-top: 1px solid var(--border); grid-column: 1/-1; }
+}
+
+
+/* ══════════════════════════════════════════════
+   2. FLOW CARDS — Redesigned
+   Direction: Numbered vertical sequence with icon left,
+   content right, prominent accent separators, connector lines
+══════════════════════════════════════════════ */
+.flow-outer-new {
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+  padding: var(--section-pad) 0;
+}
+
+/* Vertical connector line behind cards */
+.flow-outer-new::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: calc(50% - 1px);
+  width: 1px;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    var(--border) 8%,
+    var(--border) 92%,
+    transparent 100%);
+  z-index: 0;
+}
+
+.flow-header {
+  text-align: center;
+  position: relative; z-index: 1;
+  padding: 0 clamp(24px, 5vw, 80px) clamp(60px, 8vw, 100px);
+}
+
+.flow-header-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.75;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin-bottom: 20px;
+}
+.flow-header-eyebrow::before,
+.flow-header-eyebrow::after {
+  content: '';
+  width: 28px; height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+.flow-header-title {
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  color: var(--navy);
+  text-transform: uppercase;
+  line-height: 0.9;
+  margin-bottom: 14px;
+}
+.flow-header-sub {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: var(--muted);
+  max-width: 460px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+/* Cards container */
+.flow-cards-new {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative; z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 60px);
+}
+
+.flow-card-new {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.35s ease;
+}
+.flow-card-new:last-child { border-bottom: 1px solid var(--border); }
+.flow-card-new:hover { background: rgba(20,25,46,0.02); }
+
+/* Accent top bar */
+.flow-card-new::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-out);
+}
+.flow-card-new:hover::before { transform: scaleX(1); }
+
+/* Left: big number column */
+.flow-card-num-col {
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 40px 16px;
+  position: relative;
+  background: rgba(20,25,46,0.02);
+  transition: background 0.3s;
+}
+.flow-card-new:hover .flow-card-num-col { background: rgba(20,25,46,0.05); }
+
+.flow-card-num-big {
+  font-family: var(--font-display);
+  font-size: 72px;
+  color: var(--navy);
+  opacity: 0.06;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.flow-card-num-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* Right: content */
+.flow-card-body-new {
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+}
+
+.flow-card-icon-wrap {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  position: relative;
+  background: var(--bg);
+  transition: border-color 0.3s, background 0.3s;
+}
+.flow-card-new:hover .flow-card-icon-wrap {
+  border-color: rgba(217,31,31,0.3);
+  background: rgba(217,31,31,0.03);
+}
+
+.flow-card-icon-wrap::before {
+  content: '';
+  position: absolute; top: -1px; left: -1px;
+  width: 12px; height: 12px;
+  border-top: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+}
+.flow-card-icon-wrap::after {
+  content: '';
+  position: absolute; bottom: -1px; right: -1px;
+  width: 12px; height: 12px;
+  border-bottom: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+}
+
+.flow-card-icon-wrap img {
+  width: 80px; height: 80px;
+  object-fit: contain;
+}
+
+.flow-card-text {
+  flex: 1;
+}
+
+.flow-card-title-new {
+  font-family: var(--font-body);
+  font-size: var(--t-heading);
+  font-weight: 600;
+  color: var(--navy);
+  text-transform: uppercase;
+  line-height: 1.15;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.flow-card-desc-new {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+
+/* Bottom CTA strip */
+.flow-cta-strip {
+  text-align: center;
+  padding-top: 60px;
+  position: relative; z-index: 1;
+}
+
+@media (max-width: 767px) {
+  .flow-outer-new::before { display: none; }
+  .flow-card-new { grid-template-columns: 60px 1fr; }
+  .flow-card-num-big { font-size: 48px; }
+  .flow-card-body-new { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px; }
+  .flow-card-icon-wrap { width: 80px; height: 80px; }
+  .flow-card-icon-wrap img { width: 56px; height: 56px; }
+}
+
+
+/* ══════════════════════════════════════════════
+   3. END-TO-END (Services Section) — Redesigned
+   Full-width dark band, large heading left,
+   numbered pills right, big stats below flush
+══════════════════════════════════════════════ */
+.ete-section {
+  background: var(--navy);
+  position: relative;
+  overflow: hidden;
+  padding: var(--section-pad) 0 0;
+}
+
+/* Noise texture */
+.ete-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 200px;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ete-inner {
+  position: relative; z-index: 1;
+  padding: 0 clamp(24px, 5vw, 80px);
+}
+
+/* Top row: heading + description */
+.ete-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 100px);
+  align-items: end;
+  margin-bottom: clamp(60px, 8vw, 100px);
+  border-bottom: 1px solid rgba(242,240,235,0.07);
+  padding-bottom: clamp(50px, 6vw, 80px);
+}
+
+.ete-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(242,240,235,0.35);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+.ete-eyebrow::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--accent);
+}
+
+.ete-heading {
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  color: var(--white);
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+}
+
+.ete-right {
+  padding-bottom: 4px;
+}
+
+.ete-sub {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: rgba(242,240,235,0.50);
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+
+/* Three service cards — horizontal list */
+.ete-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid rgba(242,240,235,0.08);
+  margin-bottom: 0;
+}
+
+.ete-card {
+  padding: 44px 36px;
+  border-right: 1px solid rgba(242,240,235,0.08);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.35s;
+  cursor: default;
+}
+.ete-card:last-child { border-right: none; }
+.ete-card:hover { background: rgba(242,240,235,0.03); }
+
+/* Vertical accent bar on left */
+.ete-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 2px; height: 0;
+  background: var(--accent);
+  transition: height 0.5s var(--ease-out);
+}
+.ete-card:hover::before { height: 100%; }
+
+.ete-card-num {
+  font-family: var(--font-display);
+  font-size: 80px;
+  color: var(--white);
+  opacity: 0.05;
+  line-height: 1;
+  position: absolute;
+  bottom: 16px; right: 24px;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.ete-card:hover .ete-card-num { opacity: 0.09; }
+
+.ete-card-tag {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.ete-card-title {
+  font-family: var(--font-body);
+  font-size: var(--t-heading);
+  font-weight: 600;
+  color: var(--white);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.ete-card-desc {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: rgba(242,240,235,0.45);
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+/* Stat band — flush to section bottom, full width */
+.ete-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid rgba(242,240,235,0.08);
+  margin-top: 0;
+}
+
+.ete-stat {
+  padding: 44px 36px;
+  border-right: 1px solid rgba(242,240,235,0.08);
+  transition: background 0.3s;
+}
+.ete-stat:last-child { border-right: none; }
+.ete-stat:hover { background: rgba(242,240,235,0.03); }
+
+.ete-stat-n {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 64px);
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.ete-stat-l {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(242,240,235,0.30);
+}
+
+@media (max-width: 991px) {
+  .ete-top { grid-template-columns: 1fr; gap: 32px; }
+  .ete-cards { grid-template-columns: 1fr; }
+  .ete-card { border-right: none; border-bottom: 1px solid rgba(242,240,235,0.08); }
+  .ete-card:last-child { border-bottom: none; }
+  .ete-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 575px) {
+  .ete-stats { grid-template-columns: 1fr 1fr; }
+}
+
+
+/* ══════════════════════════════════════════════
+   4. PROJECTS — Redesigned
+   Asymmetric grid: 1 large feature + 4 secondary
+   Large: 60% width, tall image top, content bottom
+   Secondary: 2×2 grid, image left 40%, content right 60%
+══════════════════════════════════════════════ */
+.projects-section-new {
+  background: var(--bg);
+  padding: var(--section-pad) 0;
+}
+
+.projects-inner {
+  padding: 0 clamp(24px, 5vw, 80px);
+}
+
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: clamp(48px, 6vw, 80px);
+  gap: 40px;
+}
+
+.projects-header-left {}
+
+.projects-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.projects-eyebrow::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--accent);
+}
+
+.projects-heading {
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  color: var(--navy);
+  text-transform: uppercase;
+  line-height: 0.9;
+}
+
+.projects-header-right {
+  max-width: 380px;
+}
+.projects-header-right p {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 300;
+  text-align: right;
+}
+
+/* Main grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: 5fr 3fr;
+  grid-template-rows: auto auto;
+  gap: 2px;
+  background: var(--border);
+}
+
+.project-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Feature card — spans left column full height */
+.project-card--feature {
+  grid-row: 1 / 3;
+}
+
+.project-card img {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s var(--ease-out), filter 0.5s ease;
+  filter: saturate(0.7) brightness(0.9);
+}
+.project-card--feature img { height: 480px; }
+.project-card:not(.project-card--feature) img { height: 220px; }
+
+.project-card:hover img {
+  transform: scale(1.04);
+  filter: saturate(1) brightness(1);
+}
+
+/* Content area */
+.project-card-body {
+  padding: 28px 32px 32px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  position: relative;
+  transition: background 0.3s;
+}
+.project-card:hover .project-card-body { background: rgba(20,25,46,0.02); }
+
+/* Top accent line */
+.project-card-body::before {
+  content: '';
+  position: absolute; top: -1px; left: 0;
+  width: 0; height: 2px;
+  background: var(--accent);
+  transition: width 0.5s var(--ease-out);
+}
+.project-card:hover .project-card-body::before { width: 60px; }
+
+.project-card-client {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.project-card-title {
+  font-family: var(--font-body);
+  font-size: var(--t-heading);
+  font-weight: 600;
+  color: var(--navy);
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.project-card-desc {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: var(--muted);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.project-card-meta {
+  display: flex;
+  gap: 20px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.project-card-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: rgba(20,25,46,0.05);
+  padding: 4px 10px;
+}
+
+/* Right secondary cards stack */
+.project-card--secondary {
+  /* normal single-cell */
+}
+
+/* Small tag for all-projects CTA */
+.projects-cta {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 28px;
+}
+
+@media (max-width: 991px) {
+  .projects-header { flex-direction: column; align-items: flex-start; }
+  .projects-header-right p { text-align: left; }
+  .projects-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .project-card--feature { grid-row: auto; }
+  .project-card--feature img { height: 300px; }
+}
+
+
+/* ══════════════════════════════════════════════
+   5. PARTNERS — 2 featured + 3 secondary
+   Featured: large horizontal cards, 2 across top
+   Secondary: smaller 3 across bottom, less visual weight
+══════════════════════════════════════════════ */
+.partners-section-new {
+  background: var(--navy);
+  padding: var(--section-pad) 0;
+  overflow: hidden;
+}
+
+.partners-inner {
+  padding: 0 clamp(24px, 5vw, 80px);
+}
+
+.partners-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  margin-bottom: clamp(56px, 7vw, 88px);
+}
+
+.partners-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(242,240,235,0.30);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.partners-eyebrow::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--accent);
+}
+
+.partners-heading {
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  color: var(--white);
+  text-transform: uppercase;
+  line-height: 0.9;
+}
+
+.partners-header-right {
+  max-width: 400px;
+}
+.partners-header-right p {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: rgba(242,240,235,0.45);
+  line-height: 1.75;
+  font-weight: 300;
+  text-align: right;
+}
+
+/* ── FEATURED PARTNERS (2) ── */
+.partners-featured {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: rgba(242,240,235,0.06);
+  margin-bottom: 2px;
+}
+
+.partner-featured-card {
+  background: var(--navy);
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.35s;
+  cursor: default;
+}
+.partner-featured-card:hover { background: rgba(242,240,235,0.03); }
+
+/* Accent left stripe */
+.partner-featured-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 2px; height: 100%;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.partner-featured-card:hover::before { opacity: 1; }
+
+.partner-featured-img {
+  overflow: hidden;
+  position: relative;
+}
+.partner-featured-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.6) brightness(0.55);
+  transition: filter 0.5s ease, transform 0.6s var(--ease-out);
+  display: block;
+}
+.partner-featured-card:hover .partner-featured-img img {
+  filter: grayscale(0) brightness(0.7);
+  transform: scale(1.05);
+}
+
+.partner-featured-body {
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid rgba(242,240,235,0.07);
+}
+
+.partner-featured-num {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  opacity: 0.7;
+  margin-bottom: 16px;
+}
+
+.partner-featured-name {
+  font-family: var(--font-body);
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 600;
+  color: var(--white);
+  text-transform: uppercase;
+  line-height: 1.15;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.partner-featured-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(217,31,31,0.4);
+  padding: 4px 10px;
+  margin-bottom: 16px;
+}
+
+.partner-featured-desc {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: rgba(242,240,235,0.45);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── SECONDARY PARTNERS (3) ── */
+.partners-secondary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: rgba(242,240,235,0.06);
+}
+
+.partner-secondary-card {
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  cursor: default;
+  transition: background 0.35s;
+  opacity: 0.75;
+}
+.partner-secondary-card:hover {
+  opacity: 1;
+  background: rgba(242,240,235,0.025);
+}
+
+.partner-secondary-img {
+  height: 120px;
+  overflow: hidden;
+}
+.partner-secondary-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) brightness(0.4);
+  transition: filter 0.4s ease;
+  display: block;
+}
+.partner-secondary-card:hover .partner-secondary-img img {
+  filter: grayscale(0.6) brightness(0.55);
+}
+
+.partner-secondary-body {
+  padding: 20px 22px 24px;
+  border-top: 1px solid rgba(242,240,235,0.06);
+  flex: 1;
+}
+
+.partner-secondary-num {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(242,240,235,0.25);
+  margin-bottom: 8px;
+}
+
+.partner-secondary-name {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(242,240,235,0.65);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.partner-secondary-desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(242,240,235,0.30);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+@media (max-width: 991px) {
+  .partners-featured { grid-template-columns: 1fr; }
+  .partner-featured-card { grid-template-columns: 160px 1fr; }
+  .partners-secondary { grid-template-columns: 1fr 1fr; }
+  .partner-secondary-card:nth-child(3) { grid-column: 1/-1; }
+  .partners-header { flex-direction: column; align-items: flex-start; }
+  .partners-header-right p { text-align: left; }
+}
+@media (max-width: 575px) {
+  .partner-featured-card { grid-template-columns: 1fr; }
+  .partner-featured-img { height: 180px; }
+  .partners-secondary { grid-template-columns: 1fr; }
+  .partner-secondary-card:nth-child(3) { grid-column: auto; }
+}
+
+
+/* ══════════════════════════════════════════════
+   6. CONTACT — Add proper heading section
+══════════════════════════════════════════════ */
+.contact-section {
+  background: var(--bg);
+  padding: 0;
+}
+
+/* Heading band above the form */
+.contact-heading-band {
+  background: var(--navy);
+  padding: clamp(60px, 8vw, 100px) clamp(24px, 5vw, 80px) clamp(48px, 6vw, 72px);
+  position: relative;
+  overflow: hidden;
+  border-bottom: none;
+}
+
+.contact-heading-band::before {
+  content: 'CONTACT';
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: clamp(120px, 16vw, 220px);
+  color: var(--white);
+  opacity: 0.025;
+  right: -20px; bottom: -20px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}
+
+.contact-band-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 60px;
+}
+
+.contact-band-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(242,240,235,0.30);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.contact-band-eyebrow::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--accent);
+}
+
+.contact-band-title {
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  color: var(--white);
+  text-transform: uppercase;
+  line-height: 0.9;
+  margin-bottom: 18px;
+}
+
+.contact-band-sub {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: rgba(242,240,235,0.45);
+  line-height: 1.75;
+  font-weight: 300;
+  max-width: 520px;
+}
+
+.contact-band-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.contact-band-phone {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 46px);
+  color: var(--white);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.contact-band-phone:hover { color: var(--accent); }
+
+.contact-band-phone-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  color: rgba(242,240,235,0.25);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* The existing page-main grid */
+.page-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.page-form-panel {
+  padding: clamp(48px, 6vw, 80px) clamp(24px, 5vw, 60px);
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+}
+
+.page-form-panel h2 {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 5vw, 72px);
+  color: var(--navy);
+  text-transform: uppercase;
+  line-height: 0.9;
+  margin-bottom: 18px;
+  letter-spacing: 0.02em;
+}
+
+.form-section-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+.form-section-label::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--accent);
+}
+
+.form-note {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+.form-note span { color: var(--accent); }
+
+/* Form fields */
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 0;
+}
+
+.field-row label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.field-row label span { color: var(--accent); }
+
+.field-row input,
+.field-row select,
+.field-row textarea {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: var(--navy);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.25s;
+  width: 100%;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.field-row input:focus,
+.field-row select:focus,
+.field-row textarea:focus {
+  border-color: rgba(217,31,31,0.5);
+}
+
+.field-row textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.file-upload-row {
+  margin-bottom: 16px;
+}
+.file-upload-row > label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 6px;
+}
+.file-upload-row > label span { color: var(--accent); }
+
+.file-upload-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+}
+
+.file-btn {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.file-btn:hover { background: var(--accent); }
+
+.file-name {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+.textarea-wrap {
+  position: relative;
+}
+
+.char-count {
+  position: absolute;
+  bottom: 10px; right: 12px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(20,25,46,0.25);
+  pointer-events: none;
+}
+
+.submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  padding: 16px 36px;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: background 0.3s, gap 0.3s;
+  width: 100%;
+  justify-content: center;
+}
+.submit-btn:hover { background: var(--accent); gap: 18px; }
+
+/* Info panel */
+.page-info-panel {
+  padding: clamp(48px, 6vw, 80px) clamp(24px, 5vw, 60px);
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.info-panel-heading {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 5vw, 72px);
+  color: var(--white);
+  text-transform: uppercase;
+  line-height: 0.9;
+  margin-bottom: 18px;
+  letter-spacing: 0.02em;
+}
+
+.info-panel-desc {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: rgba(242,240,235,0.45);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+
+.info-divider {
+  width: 40px; height: 1px;
+  background: rgba(242,240,235,0.15);
+  margin: 24px 0 28px;
+}
+
+.page-item {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(242,240,235,0.07);
+}
+.page-item:last-of-type { border-bottom: none; }
+
+.page-item-icon {
+  flex-shrink: 0;
+  width: 36px;
+  margin-top: 2px;
+}
+.page-item-icon svg {
+  width: 100%; height: auto;
+}
+
+.page-item-body {}
+
+.page-item-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(242,240,235,0.25);
+  margin-bottom: 4px;
+}
+
+.page-item-title {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.page-item-text {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: rgba(242,240,235,0.55);
+  line-height: 1.65;
+}
+.page-item-text a {
+  color: rgba(242,240,235,0.55);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.page-item-text a:hover { color: var(--white); }
+
+.social-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.social-btn {
+  width: 38px; height: 38px;
+  border: 1px solid rgba(242,240,235,0.15);
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+  transition: border-color 0.25s, background 0.25s;
+}
+.social-btn:hover {
+  border-color: var(--accent);
+  background: rgba(217,31,31,0.12);
+}
+.social-btn svg {
+  width: 16px; height: 16px;
+  fill: rgba(242,240,235,0.6);
+  stroke: none;
+}
+.social-btn:hover svg { fill: var(--white); }
+
+@media (max-width: 991px) {
+  .contact-band-inner { grid-template-columns: 1fr; gap: 32px; }
+  .contact-band-right { text-align: left; }
+  .page-main { grid-template-columns: 1fr; }
+  .page-form-panel { border-right: none; border-bottom: 1px solid var(--border); }
+  .field-grid { grid-template-columns: 1fr; }
+}
+
+  </style>
+</head>
+<body>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 1 — ABOUT US (Redesigned)
+══════════════════════════════════════════════ -->
+<div class="section-sep">01 — About</div>
+
+<section id="about">
+  <div class="about-inner">
+
+    <!-- LEFT: image with overlay -->
+    <div class="about-left">
+      <img src="css/images/Jaton-infra-2.jpeg" alt="Jatson Power Infrastructure" class="about-left-img"/>
+      <div class="about-left-overlay">
+        <div class="about-left-tag">Get to know us</div>
+        <div class="about-left-bottom">
+          <div class="about-left-founded">1998</div>
+          <div class="about-left-since">Est. · Valsad, Gujarat</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: content -->
+    <div class="about-right">
+      <div class="about-right-top">
+        <div class="about-eyebrow">Jatson Power Limited</div>
+        <h2 class="about-heading">
+          Founded<br>in 1998.<br>Built to Last.
+        </h2>
+
+        <p class="about-body">
+          We are committed to providing one-stop solutions and time-bound services for any industrial electrical needs. Focused commitment and efforts have resulted in manifold growth and expansion of the network. Today, JATSON has a strong workforce of over 200 dedicated team members, working tirelessly to provide comprehensive solutions with unwavering commitment.
+        </p>
+
+        <!-- Mini stats -->
+        <div class="about-stats">
+          <div class="about-stat">
+            <div class="about-stat-n">200+</div>
+            <div class="about-stat-l">Team Members</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-n">340+</div>
+            <div class="about-stat-l">Projects</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-n">26yr</div>
+            <div class="about-stat-l">Experience</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <a href="/about" class="main-button">About Us →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2 — FLOW CARDS (Redesigned)
+══════════════════════════════════════════════ -->
+<div class="section-sep">02 — Turnkey Delivery</div>
+
+<section class="flow-outer-new">
+
+  <div class="flow-header">
+    <div class="flow-header-eyebrow">Turnkey Delivery</div>
+    <h2 class="flow-header-title">End-to-End.<br>No Handoffs.</h2>
+    <p class="flow-header-sub">Design, manufacture, and install — one team, zero gaps, complete accountability from first drawing to final commissioning.</p>
+  </div>
+
+  <div class="flow-cards-new">
+
+    <div class="flow-card-new">
+      <div class="flow-card-num-col">
+        <div class="flow-card-num-big">01</div>
+        <span class="flow-card-num-label">Design</span>
+      </div>
+      <div class="flow-card-body-new">
+        <div class="flow-card-icon-wrap">
+          <img src="css/images/1__3_-removebg-preview.png" alt="Design"/>
+        </div>
+        <div class="flow-card-text">
+          <h3 class="flow-card-title-new">Design</h3>
+          <p class="flow-card-desc-new">Load analysis, protection coordination &amp; single-line diagrams engineered from first principles. Nothing assumed, everything verified.</p>
+          <a href="" class="know-more">know more</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-card-new">
+      <div class="flow-card-num-col">
+        <div class="flow-card-num-big">02</div>
+        <span class="flow-card-num-label">Manufacture</span>
+      </div>
+      <div class="flow-card-body-new">
+        <div class="flow-card-icon-wrap">
+          <img src="css/images/1__1_-removebg-preview.png" alt="Manufacture"/>
+        </div>
+        <div class="flow-card-text">
+          <h3 class="flow-card-title-new">Manufacture</h3>
+          <p class="flow-card-desc-new">Panels &amp; switchgear built in-house. Full QA at every stage — tested and certified before it leaves the factory floor.</p>
+          <a href="" class="know-more">know more</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-card-new">
+      <div class="flow-card-num-col">
+        <div class="flow-card-num-big">03</div>
+        <span class="flow-card-num-label">Commission</span>
+      </div>
+      <div class="flow-card-body-new">
+        <div class="flow-card-icon-wrap">
+          <img src="css/images/1__2_-removebg-preview.png" alt="Commission"/>
+        </div>
+        <div class="flow-card-text">
+          <h3 class="flow-card-title-new">Commission</h3>
+          <p class="flow-card-desc-new">Relay testing, thermal imaging &amp; full site sign-off. We don't leave until everything is live, stable, and verified.</p>
+          <a href="" class="know-more">know more</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="flow-cta-strip">
+    <a href="/services" class="main-button">All Services →</a>
+  </div>
+
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3 — END-TO-END (How We Deliver)
+══════════════════════════════════════════════ -->
+<div class="section-sep section-sep--dark">03 — How We Deliver</div>
+
+<section class="ete-section">
+  <div class="ete-inner">
+    <div class="ete-top">
+      <div>
+        <div class="ete-eyebrow">How We Deliver</div>
+        <h2 class="ete-heading">End-to-End.<br>No Gaps.<br>No Guesswork.</h2>
+      </div>
+      <div class="ete-right">
+        <p class="ete-sub">
+          Every project we take on is governed by a single principle: complete ownership. From the first load calculation to the final thermal scan, we don't hand off — we follow through.
+        </p>
+        <a href="/contact" class="main-button main-button--light">Start a Project →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ete-cards">
+    <div class="ete-card">
+      <span class="ete-card-tag">01 — Design</span>
+      <h3 class="ete-card-title">Engineered from First Principles</h3>
+      <p class="ete-card-desc">Every project begins with a full load analysis, single-line diagram, and coordination study. Nothing is assumed.</p>
+      <div class="ete-card-num">01</div>
+    </div>
+    <div class="ete-card">
+      <span class="ete-card-tag">02 — Build</span>
+      <h3 class="ete-card-title">Fabricated to Spec</h3>
+      <p class="ete-card-desc">Panels, switchgear, and cable assemblies manufactured in our facility. Full QA at every stage before site delivery.</p>
+      <div class="ete-card-num">02</div>
+    </div>
+    <div class="ete-card">
+      <span class="ete-card-tag">03 — Commission</span>
+      <h3 class="ete-card-title">Live. Stable. Verified.</h3>
+      <p class="ete-card-desc">System energization, protection relay testing, and thermal imaging at full load. We don't leave until every circuit is proven.</p>
+      <div class="ete-card-num">03</div>
+    </div>
+  </div>
+
+  <div class="ete-stats">
+    <div class="ete-stat">
+      <div class="ete-stat-n">340+</div>
+      <div class="ete-stat-l">Turnkey Projects</div>
+    </div>
+    <div class="ete-stat">
+      <div class="ete-stat-n">11kV</div>
+      <div class="ete-stat-l">Max System Voltage</div>
+    </div>
+    <div class="ete-stat">
+      <div class="ete-stat-n">38yr</div>
+      <div class="ete-stat-l">Site Experience</div>
+    </div>
+    <div class="ete-stat">
+      <div class="ete-stat-n">100%</div>
+      <div class="ete-stat-l">Commissioning Rate</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 4 — PROJECTS (Redesigned)
+══════════════════════════════════════════════ -->
+<div class="section-sep">04 — Projects</div>
+
+<section class="projects-section-new">
+  <div class="projects-inner">
+
+    <div class="projects-header">
+      <div class="projects-header-left">
+        <div class="projects-eyebrow">Featured Work</div>
+        <h2 class="projects-heading">Projects</h2>
+      </div>
+      <div class="projects-header-right">
+        <p>A selection of our delivered turnkey electrical projects across heavy industry, utilities, and commercial infrastructure.</p>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Feature project (left, full height) -->
+      <div class="project-card project-card--feature">
+        <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&q=80&auto=format&fit=crop" alt="Industrial Substation"/>
+        <div class="project-card-body">
+          <span class="project-card-client">Reliance Industries</span>
+          <h4 class="project-card-title">11kV GIS Substation — Jamnagar</h4>
+          <p class="project-card-desc">Turnkey design, fabrication, and commissioning of a 20 MVA dual-feeder 11kV GIS substation for a greenfield petrochemical complex. Delivered 18 days ahead of schedule.</p>
+          <div class="project-card-meta">
+            <span class="project-card-tag">11kV</span>
+            <span class="project-card-tag">20 MVA</span>
+            <span class="project-card-tag">Greenfield</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary top right -->
+      <div class="project-card project-card--secondary">
+        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=500&q=80&auto=format&fit=crop" alt="Power Distribution"/>
+        <div class="project-card-body">
+          <span class="project-card-client">GSECL</span>
+          <h4 class="project-card-title">LT Distribution Upgrade</h4>
+          <p class="project-card-desc">Complete overhaul of low-tension distribution network spanning 14 feeders for Gujarat State Electricity Corporation's Wanakbori plant.</p>
+          <div class="project-card-meta">
+            <span class="project-card-tag">14 Feeders</span>
+            <span class="project-card-tag">LT Network</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary bottom right -->
+      <div class="project-card project-card--secondary">
+        <img src="https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=500&q=80&auto=format&fit=crop" alt="MCC Panel"/>
+        <div class="project-card-body">
+          <span class="project-card-client">Adani Ports</span>
+          <h4 class="project-card-title">MCC Panel Suite — Mundra</h4>
+          <p class="project-card-desc">24-panel Motor Control Centre fabrication and installation for port crane operations.</p>
+          <div class="project-card-meta">
+            <span class="project-card-tag">24 Panels</span>
+            <span class="project-card-tag">MCC</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="projects-cta">
+      <a href="/projects" class="main-button">All Projects →</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 5 — PARTNERS (2 featured + 3 secondary)
+══════════════════════════════════════════════ -->
+<div class="section-sep section-sep--dark">05 — Partners</div>
+
+<section class="partners-section-new">
+  <div class="partners-inner">
+
+    <div class="partners-header">
+      <div>
+        <div class="partners-eyebrow">Trusted By Industry Leaders</div>
+        <h2 class="partners-heading">Our Partners</h2>
+      </div>
+      <div class="partners-header-right">
+        <p>We work alongside the best — from global OEMs to India's largest industrial conglomerates — delivering electrical solutions that meet the highest standards.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Featured 2 -->
+  <div style="padding: 0 clamp(24px,5vw,80px);">
+    <div class="partners-featured">
+
+      <div class="partner-featured-card">
+        <div class="partner-featured-img">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=70&auto=format&fit=crop" alt="Siemens"/>
+        </div>
+        <div class="partner-featured-body">
+          <div>
+            <p class="partner-featured-num">01 — Primary Partner</p>
+            <span class="partner-featured-badge">Authorised Panel Builder</span>
+            <h3 class="partner-featured-name">Siemens AG</h3>
+            <p class="partner-featured-desc">Authorised panel builder and field service partner for Siemens low &amp; medium voltage equipment across Western India. Certified for SIVACON S8 and SIMOPRIME assemblies.</p>
+          </div>
+          <div style="margin-top:24px;">
+            <a href="" class="know-more" style="color:rgba(242,240,235,0.5);">view partnership</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="partner-featured-card">
+        <div class="partner-featured-img">
+          <img src="https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=500&q=70&auto=format&fit=crop" alt="ABB"/>
+        </div>
+        <div class="partner-featured-body">
+          <div>
+            <p class="partner-featured-num">02 — Primary Partner</p>
+            <span class="partner-featured-badge">Certified Integrator</span>
+            <h3 class="partner-featured-name">ABB India</h3>
+            <p class="partner-featured-desc">Certified integrator for ABB switchgear, drives, and MNS MCC systems — from specification to commissioning. Long-standing field service relationship since 2004.</p>
+          </div>
+          <div style="margin-top:24px;">
+            <a href="" class="know-more" style="color:rgba(242,240,235,0.5);">view partnership</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Secondary 3 -->
+    <div class="partners-secondary">
+
+      <div class="partner-secondary-card">
+        <div class="partner-secondary-img">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=70&auto=format&fit=crop" alt="Schneider Electric"/>
+        </div>
+        <div class="partner-secondary-body">
+          <p class="partner-secondary-num">03</p>
+          <h4 class="partner-secondary-name">Schneider Electric</h4>
+          <p class="partner-secondary-desc">Preferred EcoStruxure panel builder for smart energy management.</p>
+        </div>
+      </div>
+
+      <div class="partner-secondary-card">
+        <div class="partner-secondary-img">
+          <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=500&q=70&auto=format&fit=crop" alt="L&T Electrical"/>
+        </div>
+        <div class="partner-secondary-body">
+          <p class="partner-secondary-num">04</p>
+          <h4 class="partner-secondary-name">L&amp;T Electrical</h4>
+          <p class="partner-secondary-desc">Distribution and installation partner for HV switchgear and busduct product lines.</p>
+        </div>
+      </div>
+
+      <div class="partner-secondary-card">
+        <div class="partner-secondary-img">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&q=70&auto=format&fit=crop" alt="Havells"/>
+        </div>
+        <div class="partner-secondary-body">
+          <p class="partner-secondary-num">05</p>
+          <h4 class="partner-secondary-name">Havells India</h4>
+          <p class="partner-secondary-desc">Authorised stockist and systems integrator for industrial circuit protection.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 6 — CONTACT (with heading band)
+══════════════════════════════════════════════ -->
+<div class="section-sep">06 — Contact</div>
+
+<section class="contact-section">
+
+  <!-- NEW: Heading band -->
+  <div class="contact-heading-band">
+    <div class="contact-band-inner">
+      <div>
+        <div class="contact-band-eyebrow">Get In Touch</div>
+        <h2 class="contact-band-title">Let's Build<br>Something<br>Together.</h2>
+        <p class="contact-band-sub">
+          JATSON is an integrated solution provider for industrial electrification. Talk to our team about your project, get an estimate, or enquire about our services.
+        </p>
+      </div>
+      <div class="contact-band-right">
+        <span class="contact-band-phone-label">Sales Direct</span>
+        <a href="tel:+919825113093" class="contact-band-phone">+91 98251 13093</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Existing form + info panel -->
+  <div class="page-main">
+
+    <div class="page-form-panel">
+      <p class="form-section-label">Email Us</p>
+      <h2>Send a<br>Message</h2>
+      <p class="form-note">Your email address will not be published. Required fields are marked <span>*</span></p>
+
+      <form id="contactForm" novalidate>
+        <div class="field-grid">
+          <div class="field-row">
+            <label>Your Name <span>*</span></label>
+            <input type="text" name="name" placeholder="Your Name" required/>
+          </div>
+          <div class="field-row">
+            <label>Your Email <span>*</span></label>
+            <input type="email" name="email" placeholder="Email Address" required/>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <div class="field-row">
+            <label>Phone Number <span>*</span></label>
+            <input type="tel" name="phone" placeholder="E.g. +91 98251 13093"/>
+          </div>
+          <div class="field-row">
+            <label>Department <span>*</span></label>
+            <select name="department">
+              <option value="HR">HR</option>
+              <option value="Sales">Sales</option>
+              <option value="Technical">Technical</option>
+              <option value="General">General Enquiry</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="file-upload-row">
+          <label>Upload File <span>*</span></label>
+          <div class="file-upload-wrap">
+            <button type="button" class="file-btn" onclick="document.getElementById('fileInput').click()">Choose File</button>
+            <span class="file-name" id="fileName">No file chosen</span>
+            <input type="file" id="fileInput" name="file" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none"/>
+          </div>
+        </div>
+
+        <div class="field-row" style="margin-bottom:0">
+          <label>Message <span>*</span></label>
+          <div class="textarea-wrap">
+            <textarea name="message" id="messageArea" placeholder="Enter your message..." maxlength="180" required></textarea>
+            <span class="char-count"><span id="charCount">0</span> / 180</span>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <span>Send Message</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <div class="page-info-panel">
+      <h2 class="info-panel-heading">Let's Connect</h2>
+      <p class="info-panel-desc">
+        JATSON is an integrated solution provider for Industrial Electrification, offering Turnkey Electrical Installation, manufacturing of various types of Low Voltage and Medium Voltage Switchboards. Also provide services of Energy Audit.
+      </p>
+      <p class="info-panel-desc">
+        To talk to our professional regarding project, estimates or more. Get in touch with us.
+      </p>
+
+      <div class="info-divider"></div>
+
+      <div class="page-item">
+        <div class="page-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+          </svg>
+        </div>
+        <div class="page-item-body">
+          <p class="page-item-label">Our Address</p>
+          <p class="page-item-text">
+            Survey no. - 1045/1046, NH-48, Dhamdachi Road,<br>
+            village-Dhamdachi, Valsad - 396035
+          </p>
+        </div>
+      </div>
+
+      <div class="page-item">
+        <div class="page-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M2 8l10 7 10-7"/>
+          </svg>
+        </div>
+        <div class="page-item-body">
+          <p class="page-item-label">Sales</p>
+          <div class="page-item-title">Sales</div>
+          <p class="page-item-text">
+            sales@jatson.com<br>
+            <a href="tel:+919825113093">+91 98251 13093</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="page-item">
+        <div class="page-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M2 8l10 7 10-7"/>
+          </svg>
+        </div>
+        <div class="page-item-body">
+          <p class="page-item-label">Human Resources</p>
+          <div class="page-item-title">HR</div>
+          <p class="page-item-text">
+            hr@jatson.com<br>
+            <a href="tel:+917567831117">+91 75678 31117</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="page-item">
+        <div class="page-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(242,240,235,0.55)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <line x1="6" y1="9" x2="18" y2="9"/>
+            <line x1="6" y1="13" x2="14" y2="13"/>
+          </svg>
+        </div>
+        <div class="page-item-body">
+          <p class="page-item-label">Company Identification</p>
+          <div class="page-item-title">CIN</div>
+          <p class="page-item-text">U31103GJ2004PTC044090</p>
+        </div>
+      </div>
+
+      <div class="social-row">
+        <a href="#" class="social-btn" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#14192e"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="X / Twitter">
+          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="#14192e"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#14192e" stroke-width="2"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+// Char counter
+const msg = document.getElementById('messageArea');
+const cnt = document.getElementById('charCount');
+if (msg && cnt) msg.addEventListener('input', () => cnt.textContent = msg.value.length);
+
+// File name
+const fi = document.getElementById('fileInput');
+const fn = document.getElementById('fileName');
+if (fi && fn) fi.addEventListener('change', () => fn.textContent = fi.files[0]?.name || 'No file chosen');
+</script>
+
+</body>
+</html>

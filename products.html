@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>JATSON — Turnkey Electrical Systems</title>
+
+  <link rel="stylesheet" href="css/stye.css">
+  <link rel="stylesheet" href="css/style-2.css">
+<link rel="stylesheet" href="css/global-industrial.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"/>
+  <style>
+    /* ═══════════════════════════════════════
+       PRODUCTS PAGE — scoped styles only
+    ═══════════════════════════════════════ */
+
+    /* Category filter strip */
+    .product-filter-strip {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(24px, 4vw, 60px);
+      position: sticky;
+      top: 72px; /* adjust to your nav height */
+      z-index: 90;
+    }
+    .filter-tabs {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-tab {
+      font-family: var(--font-main);
+      font-size: var(--t-xs);
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 20px 28px;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.25s ease, border-color 0.25s ease;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+    .filter-tab:hover { color: var(--navy); }
+    .filter-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* Category section header */
+    .cat-section { margin-bottom: 0; }
+    .cat-header {
+      background: var(--navy);
+      padding: clamp(48px, 6vw, 80px) clamp(24px, 4vw, 60px) clamp(32px, 4vw, 52px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 32px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .cat-num {
+      font-family: var(--font-display);
+      font-size: clamp(80px, 12vw, 160px);
+      color: rgba(242,240,235,0.04);
+      line-height: 1;
+      position: absolute;
+      right: clamp(24px, 4vw, 60px);
+      top: 50%; transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .cat-header-left { position: relative; }
+
+    /* Product listing grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border-light);
+      background-color: var(--navy);
+    }
+    /* Featured product (full-width) */
+    .product-featured {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--navy-mid);
+    }
+    .product-featured-img { position: relative; overflow: hidden; }
+    .product-featured-img .img-placeholder { height: 100%; min-height: 440px; }
+    .product-featured-body {
+      padding: clamp(40px, 5vw, 72px) clamp(32px, 4vw, 56px);
+      display: flex; flex-direction: column; justify-content: center;
+      border-left: 1px solid var(--border-light);
+    }
+    .product-featured .product-cat-tag { margin-bottom: 12px; }
+    .product-featured-name {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 4vw, 52px);
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .product-featured-desc {
+      font-family: var(--font-main);
+      font-size: var(--t-body);
+      font-weight: 300;
+      color: var(--muted-inv);
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+
+    /* Spec table */
+    .spec-table {
+      border: 1px solid var(--border-light);
+      margin-bottom: 32px;
+    }
+
+    /* Standard product card */
+    .prod-card {
+      background: var(--navy-mid);
+      padding: 0;
+      overflow: hidden;
+      position: relative;
+      transition: border-color 0.3s ease;
+      cursor: pointer;
+    }
+    .prod-card-img { overflow: hidden; position: relative; }
+    .prod-card-img .img-placeholder { aspect-ratio: 4/3; transition: transform 0.5s var(--ease-out); }
+    .prod-card:hover .prod-card-img .img-placeholder { transform: scale(1.03); }
+    .prod-card-body { padding: 24px; border-top: 1px solid var(--border-light); }
+
+    /* Badge strip */
+    .badge-strip {
+      background: var(--accent);
+      padding: clamp(24px, 3vw, 40px) 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .badge-strip-inner {
+      display: inline-flex;
+      gap: 0;
+      animation: marquee 22s linear infinite;
+    }
+    .badge-item {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 1.8vw, 20px);
+      color: rgba(242,240,235,0.55);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0 40px;
+      border-right: 1px solid rgba(242,240,235,0.2);
+    }
+    .badge-item.highlight { color: var(--white); }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* Downloads / Datasheets */
+    .downloads-section { background: var(--bg); }
+    .download-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 16px;
+    }
+    .download-row:first-child { border-top: 1px solid var(--border); }
+    .download-info { flex: 1; }
+    .download-name {
+      font-family: var(--font-main);
+      font-size: var(--t-body);
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 3px;
+    }
+    .download-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .download-btn {
+      font-family: var(--font-main);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--navy);
+      border: 1px solid var(--border);
+      padding: 9px 18px;
+      background: transparent;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+    }
+    .download-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .download-btn:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+      .product-featured { grid-template-columns: 1fr; }
+      .product-featured-body { border-left: none; border-top: 1px solid var(--border-light); }
+      .product-grid { grid-template-columns: 1fr 1fr; }
+      .cat-header { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 575px) {
+      .product-grid { grid-template-columns: 1fr; }
+      .download-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <!-- ═══ PAGE HERO ═══ -->
+  <div class="page-hero">
+    <div class="container-fluid px-4 px-md-5">
+      <div class="page-hero-eyebrow fade-up">
+        <span class="eyebrow-line"></span>
+        <span>Our Range</span>
+      </div>
+      <h1 class="fade-up" style="transition-delay:0.08s">
+        ENGINEERED<br><span>PRODUCTS.</span>
+      </h1>
+      <p class="page-hero-sub fade-up" style="transition-delay:0.16s">
+        In-house manufactured switchboards and panels — built to IS/IEC standards, tested at CPRI, designed for the demands of Indian industry.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══ FILTER STRIP ═══ -->
+  <div class="product-filter-strip">
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-cat="all">All Products</button>
+      <button class="filter-tab" data-cat="lv">LV Switchboards</button>
+      <button class="filter-tab" data-cat="mv">MV Switchboards</button>
+      <button class="filter-tab" data-cat="distribution">Distribution Boards</button>
+      <button class="filter-tab" data-cat="mcc">Motor Control Centres</button>
+      <button class="filter-tab" data-cat="apfc">APFC Panels</button>
+    </div>
+  </div>
+
+  <!-- ═══ CATEGORY 1: LV SWITCHBOARDS ═══ -->
+  <div class="cat-section" id="lv">
+    <!-- Category header -->
+    <div class="cat-header" style="position:relative;">
+      <div class="cat-header-left">
+        <div class="section-eyebrow inv fade-up">Category 01</div>
+        <h2 class="section-heading inv fade-up" style="transition-delay:0.06s; margin-bottom:12px;">LV Switchboards</h2>
+        <p class="section-body inv fade-up" style="transition-delay:0.12s;">
+          Low Voltage switchboards manufactured to IS 8623 / IEC 61439 standards. Available from 63A to 6300A configurations.
+        </p>
+      </div>
+      <div class="cat-num">01</div>
+    </div>
+
+    <!-- Featured product -->
+    <div class="product-featured">
+      <div class="product-featured-img fade-up">
+        <div class="img-placeholder" data-label="PCC Panel — Replace with product image" style="height:100%;"></div>
+      </div>
+      <div class="product-featured-body fade-up" style="transition-delay:0.1s">
+        <div class="product-cat-tag">Featured Product</div>
+        <div class="product-featured-name">Main Power<br>Control Centre<br>(PCC Panel)</div>
+        <p class="product-featured-desc">
+          The PCC Panel is the main distribution point from the source of supply. Built with form 3b/4b segregation, it accommodates ACBs, MCCBs, and metering instruments in a robust powder-coated MS enclosure.
+        </p>
+        <div class="spec-table">
+          <div class="spec-row"><span class="spec-key">Voltage</span><span class="spec-val">415V ±10%, 3Ph, 4W</span></div>
+          <div class="spec-row"><span class="spec-key">Current</span><span class="spec-val">Up to 6300A</span></div>
+          <div class="spec-row"><span class="spec-key">Short Circuit</span><span class="spec-val">50 kA for 1 sec</span></div>
+          <div class="spec-row"><span class="spec-key">Protection</span><span class="spec-val">IP42 / IP54 (options)</span></div>
+          <div class="spec-row"><span class="spec-key">Standard</span><span class="spec-val">IS 8623 / IEC 61439-1&2</span></div>
+        </div>
+        <a href="contact.html" class="brand-btn outline-inv">
+          <span>Request Datasheet</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Product grid -->
+    <div class="product-grid">
+      <div class="prod-card fade-up">
+        <div class="prod-card-img">
+          <div class="img-placeholder ratio-4-3" data-label="MCC Panel"></div>
+        </div>
+        <div class="prod-card-body">
+          <div class="product-cat-tag">LV Switchboard</div>
+          <div class="product-name">Motor Control Centre (MCC)</div>
+          <p class="product-desc">Fixed / draw-out type MCC panels for motor load control, featuring DOL, star-delta, VFD bypass starters.</p>
+          <div class="spec-row"><span class="spec-key">Rating</span><span class="spec-val">Up to 2000A</span></div>
+          <div class="spec-row"><span class="spec-key">Modules</span><span class="spec-val">Fixed / Draw-out</span></div>
+          <div class="mt-3">
+            <a href="#" class="brand-btn outline" style="font-size:10px; padding:10px 20px;">
+              <span>View Specs</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card fade-up" style="transition-delay:0.08s">
+        <div class="prod-card-img">
+          <div class="img-placeholder ratio-4-3" data-label="APFC Panel"></div>
+        </div>
+        <div class="prod-card-body">
+          <div class="product-cat-tag">LV Switchboard</div>
+          <div class="product-name">APFC Panel</div>
+          <p class="product-desc">Automatic Power Factor Correction panels with microcontroller-based relay, capacitor banks, and detuned reactor options.</p>
+          <div class="spec-row"><span class="spec-key">Rating</span><span class="spec-val">20 KVAR – 2 MVAR</span></div>
+          <div class="spec-row"><span class="spec-key">Target PF</span><span class="spec-val">0.99 lag</span></div>
+          <div class="mt-3">
+            <a href="#" class="brand-btn outline" style="font-size:10px; padding:10px 20px;">
+              <span>View Specs</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card fade-up" style="transition-delay:0.16s">
+        <div class="prod-card-img">
+          <div class="img-placeholder ratio-4-3" data-label="Distribution Board"></div>
+        </div>
+        <div class="prod-card-body">
+          <div class="product-cat-tag">LV Switchboard</div>
+          <div class="product-name">Final Distribution Board (FDB)</div>
+          <p class="product-desc">Floor-standing and wall-mounted distribution boards for final sub-circuit distribution in industrial and commercial facilities.</p>
+          <div class="spec-row"><span class="spec-key">Incoming</span><span class="spec-val">Up to 800A</span></div>
+          <div class="spec-row"><span class="spec-key">Ways</span><span class="spec-val">8 – 36 ways</span></div>
+          <div class="mt-3">
+            <a href="#" class="brand-btn outline" style="font-size:10px; padding:10px 20px;">
+              <span>View Specs</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ BADGE MARQUEE ═══ -->
+  <div class="badge-strip">
+    <div class="badge-strip-inner">
+      <span class="badge-item highlight">IS 8623</span>
+      <span class="badge-item">IEC 61439</span>
+      <span class="badge-item highlight">CPRI Tested</span>
+      <span class="badge-item">IP42 / IP54</span>
+      <span class="badge-item highlight">Up to 33kV</span>
+      <span class="badge-item">Short Circuit Withstand 50kA</span>
+      <span class="badge-item highlight">Form 3b / 4b</span>
+      <span class="badge-item">BIS Certified Components</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="badge-item highlight">IS 8623</span>
+      <span class="badge-item">IEC 61439</span>
+      <span class="badge-item highlight">CPRI Tested</span>
+      <span class="badge-item">IP42 / IP54</span>
+      <span class="badge-item highlight">Up to 33kV</span>
+      <span class="badge-item">Short Circuit Withstand 50kA</span>
+      <span class="badge-item highlight">Form 3b / 4b</span>
+      <span class="badge-item">BIS Certified Components</span>
+    </div>
+  </div>
+
+  <!-- ═══ CATEGORY 2: MV SWITCHBOARDS ═══ -->
+  <div class="cat-section" id="mv">
+    <div class="cat-header" style="position:relative;">
+      <div class="cat-header-left">
+        <div class="section-eyebrow inv fade-up">Category 02</div>
+        <h2 class="section-heading inv fade-up" style="transition-delay:0.06s; margin-bottom:12px;">MV Switchboards</h2>
+        <p class="section-body inv fade-up" style="transition-delay:0.12s;">
+          Medium Voltage switchgear from 3.3kV up to 33kV — VCB panels, RMUs, and metering cubicles built to IEC 62271.
+        </p>
+      </div>
+      <div class="cat-num">02</div>
+    </div>
+    <div class="product-grid">
+      <div class="prod-card fade-up">
+        <div class="prod-card-img">
+          <div class="img-placeholder ratio-4-3" data-label="VCB Panel"></div>
+        </div>
+        <div class="prod-card-body">
+          <div class="product-cat-tag">MV Switchboard</div>
+          <div class="product-name">VCB Panel (11kV)</div>
+          <p class="product-desc">Vacuum Circuit Breaker panels with metal-clad construction, arc-resistant options, and numerical relay integration.</p>
+          <div class="spec-row"><span class="spec-key">Voltage</span><span class="spec-val">11kV / 33kV</span></div>
+          <div class="spec-row"><span class="spec-key">Standard</span><span class="spec-val">IEC 62271-200</span></div>
+          <div class="mt-3">
+            <a href="#" class="brand-btn outline" style="font-size:10px; padding:10px 20px;">
+              <span>View Specs</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card fade-up" style="transition-delay:0.08s">
+        <div class="prod-card-img">
+          <div class="img-placeholder ratio-4-3" data-label="RMU"></div>
+        </div>
+        <div class="prod-card-body">
+          <div class="product-cat-tag">MV Switchboard</div>
+          <div class="product-name">Ring Main Unit (RMU)</div>
+          <p class="product-desc">SF6 or solid-insulation ring main units for compact substation applications, with 2+1 or 3+1 configurations.</p>
+          <div class="spec-row"><span class="spec-key">Voltage</span><span class="spec-val">11kV</span></div>
+          <div class="spec-row"><span class="spec-key">Standard</span><span class="spec-val">IEC 62271-200</span></div>
+          <div class="mt-3">
+            <a href="#" class="brand-btn outline" style="font-size:10px; padding:10px 20px;">
+              <span>View Specs</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card fade-up" style="transition-delay:0.16s">
+        <div class="prod-card-img">
+          <div class="img-placeholder ratio-4-3" data-label="Metering Panel"></div>
+        </div>
+        <div class="prod-card-body">
+          <div class="product-cat-tag">MV Switchboard</div>
+          <div class="product-name">HT Metering Cubicle</div>
+          <p class="product-desc">HT metering panels with CT/PT metering, energy meters, and SCADA-ready outputs for utility interconnection.</p>
+          <div class="spec-row"><span class="spec-key">Voltage</span><span class="spec-val">Up to 33kV</span></div>
+          <div class="spec-row"><span class="spec-key">Accuracy</span><span class="spec-val">Class 0.2S / 0.5</span></div>
+          <div class="mt-3">
+            <a href="#" class="brand-btn outline" style="font-size:10px; padding:10px 20px;">
+              <span>View Specs</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DOWNLOADS ═══ -->
+  <div class="downloads-section section-padding">
+    <div class="container-fluid px-4 px-md-5">
+      <div class="row mb-5">
+        <div class="col-lg-6">
+          <div class="section-eyebrow fade-up">Documentation</div>
+          <h2 class="section-heading fade-up" style="transition-delay:0.06s">Product<br>Datasheets</h2>
+        </div>
+      </div>
+      <div class="fade-up" style="transition-delay:0.1s">
+        <div class="download-row">
+          <div class="download-info">
+            <div class="download-name">PCC Panel — Technical Datasheet</div>
+            <div class="download-meta">PDF · 2.4 MB · Updated 2024</div>
+          </div>
+          <button class="download-btn">
+            Download
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+        </div>
+        <div class="download-row">
+          <div class="download-info">
+            <div class="download-name">MCC Panel — Technical Datasheet</div>
+            <div class="download-meta">PDF · 1.8 MB · Updated 2024</div>
+          </div>
+          <button class="download-btn">
+            Download
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+        </div>
+        <div class="download-row">
+          <div class="download-info">
+            <div class="download-name">VCB Panel 11kV — Technical Datasheet</div>
+            <div class="download-meta">PDF · 3.1 MB · Updated 2024</div>
+          </div>
+          <button class="download-btn">
+            Download
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+        </div>
+        <div class="download-row">
+          <div class="download-info">
+            <div class="download-name">APFC Panel — Application Guide</div>
+            <div class="download-meta">PDF · 1.2 MB · Updated 2023</div>
+          </div>
+          <button class="download-btn">
+            Download
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+        </div>
+        <div class="download-row">
+          <div class="download-info">
+            <div class="download-name">Company Product Catalogue 2024</div>
+            <div class="download-meta">PDF · 8.7 MB · Full Catalogue</div>
+          </div>
+          <button class="download-btn">
+            Download
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/page.js"></script>
+  <script>
+    // Fade-up
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Filter tabs (category scroll)
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        const cat = this.dataset.cat;
+        if (cat !== 'all') {
+          const target = document.getElementById(cat);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

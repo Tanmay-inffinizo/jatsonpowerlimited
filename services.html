@@ -1,0 +1,455 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>JATSON — Turnkey Electrical Systems</title>
+
+  <link rel="stylesheet" href="css/stye.css">
+  <link rel="stylesheet" href="css/style-2.css">
+<link rel="stylesheet" href="css/global-industrial.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"/>
+  <style>
+    /* ═══════════════════════════════════════
+       SERVICES PAGE — scoped styles only
+    ═══════════════════════════════════════ */
+
+    /* Services intro */
+    .services-intro {
+      background: var(--bg);
+    }
+    .services-intro-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(48px, 6vw, 96px);
+      align-items: center;
+    }
+
+    /* Primary service grid (3-col) */
+    .services-grid-section { background: var(--navy); }
+    .svc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border-light);
+      border: 1px solid var(--border-light);
+    }
+    .svc-card {
+      background: var(--navy-mid);
+      padding: clamp(32px, 4vw, 52px);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.35s ease;
+    }
+    .svc-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s var(--ease-out);
+    }
+    .svc-card:hover { background: rgba(28,35,64,0.95); }
+    .svc-card:hover::before { transform: scaleX(1); }
+    .svc-card:hover .svc-read-more { opacity: 1; transform: translateX(0); }
+
+    /* Full-width service feature row */
+    .svc-feature {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .svc-feature:last-child { border-bottom: none; }
+    .svc-feature-image { position: relative; overflow: hidden; min-height: 300px; }
+    .svc-feature-image .img-placeholder { height: 100%; }
+    .svc-feature-body {
+      padding: clamp(40px, 5vw, 72px) clamp(32px, 4vw, 60px);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .svc-feature:nth-child(even) .svc-feature-image { order: 2; }
+    .svc-feature:nth-child(even) .svc-feature-body { order: 1; }
+
+    /* Process steps */
+    .process-section { background: var(--bg); }
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+    .process-step {
+      padding: clamp(28px, 3.5vw, 48px);
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .process-step:last-child { border-right: none; }
+    .process-step-num {
+      font-family: var(--font-display);
+      font-size: 72px;
+      color: rgba(20,25,46,0.06);
+      line-height: 1;
+      position: absolute;
+      top: 20px; right: 20px;
+    }
+    .process-step-icon {
+      width: 44px; height: 44px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .process-step-icon svg {
+      width: 20px; height: 20px;
+      stroke: var(--accent); fill: none;
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .process-step-title {
+      font-family: var(--font-main);
+      font-size: var(--t-sm);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .process-step-body {
+      font-family: var(--font-main);
+      font-size: var(--t-sm);
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* CTA band */
+    .svc-cta-band {
+      background: var(--accent);
+      padding: clamp(48px, 6vw, 80px) 0;
+    }
+    .svc-cta-band h2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4.5vw, 64px);
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      line-height: 1;
+    }
+    .svc-cta-band p {
+      font-family: var(--font-main);
+      font-size: var(--t-body);
+      font-weight: 300;
+      color: rgba(242,240,235,0.78);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 16px 0 0;
+    }
+    .brand-btn.white {
+      background: var(--white);
+      color: var(--navy);
+      border-color: var(--white);
+    }
+    .brand-btn.white:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+      .services-intro-inner { grid-template-columns: 1fr; }
+      .svc-grid { grid-template-columns: 1fr 1fr; }
+      .svc-feature { grid-template-columns: 1fr; }
+      .svc-feature:nth-child(even) .svc-feature-image { order: 0; }
+      .svc-feature:nth-child(even) .svc-feature-body { order: 0; }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+      .process-step:nth-child(2) { border-right: none; }
+    }
+    @media (max-width: 575px) {
+      .svc-grid { grid-template-columns: 1fr; }
+      .process-grid { grid-template-columns: 1fr; }
+      .process-step { border-right: none; border-bottom: 1px solid var(--border); }
+      .process-step:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <!-- ═══ PAGE HERO ═══ -->
+  <div class="page-hero">
+    <div class="container-fluid px-4 px-md-5">
+      <div class="page-hero-eyebrow fade-up">
+        <span class="eyebrow-line"></span>
+        <span>What We Do</span>
+      </div>
+      <h1 class="fade-up" style="transition-delay:0.08s">
+        EXPERT<br><span>SERVICES.</span>
+      </h1>
+      <p class="page-hero-sub fade-up" style="transition-delay:0.16s">
+        From design and engineering to installation and commissioning — full-spectrum electrical services for industrial India.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══ SERVICES INTRO ═══ -->
+  <div class="services-intro section-padding">
+    <div class="container-fluid px-4 px-md-5">
+      <div class="services-intro-inner">
+        <div>
+          <div class="section-eyebrow fade-up">Our Capabilities</div>
+          <h2 class="section-heading fade-up" style="transition-delay:0.06s">End-to-End<br>Electrification</h2>
+          <p class="section-body fade-up" style="transition-delay:0.12s">
+            JATSON delivers complete electrical infrastructure solutions — from initial feasibility and design through to installation, commissioning, and long-term maintenance. Every project is handled by our in-house team of qualified electrical engineers.
+          </p>
+          <div class="mt-4 fade-up" style="transition-delay:0.18s">
+            <a href="contact.html" class="brand-btn">
+              <span>Request a Quote</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="fade-up" style="transition-delay:0.1s">
+          <div class="img-placeholder ratio-4-3" data-label="Services Overview — Replace with image"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SERVICE CARDS GRID ═══ -->
+  <div class="services-grid-section section-padding">
+    <div class="container-fluid px-4 px-md-5">
+      <div class="row mb-5">
+        <div class="col-lg-7">
+          <div class="section-eyebrow inv fade-up">Core Services</div>
+          <h2 class="section-heading inv fade-up" style="transition-delay:0.06s">What We<br>Deliver</h2>
+        </div>
+      </div>
+
+      <div class="svc-grid">
+        <!-- Card 1 -->
+        <div class="svc-card fade-up">
+          <div class="svc-icon-wrap">
+            <!-- Lightning bolt icon -->
+            <svg viewBox="0 0 24 24"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div class="svc-title">Turnkey Electrical Installation</div>
+          <p class="svc-body">Complete design-to-energisation project delivery. We handle every phase — from concept drawings and procurement through to commissioning and handover.</p>
+          <a href="#" class="svc-read-more">
+            Learn More
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="svc-card fade-up" style="transition-delay:0.06s">
+          <div class="svc-icon-wrap">
+            <!-- Box/panel icon -->
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="1"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          </div>
+          <div class="svc-title">LV Switchboard Manufacturing</div>
+          <p class="svc-body">In-house fabrication of Low Voltage panels to IS/IEC standards. Custom-engineered for each application, from MCCs to PCC panels and distribution boards.</p>
+          <a href="#" class="svc-read-more">
+            Learn More
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="svc-card fade-up" style="transition-delay:0.12s">
+          <div class="svc-icon-wrap">
+            <!-- Zap/high-voltage icon -->
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+          </div>
+          <div class="svc-title">MV Switchboard Manufacturing</div>
+          <p class="svc-body">Medium Voltage panels up to 33kV. Vacuum circuit breaker panels, ring main units, and metering panels built to exacting tolerances.</p>
+          <a href="#" class="svc-read-more">
+            Learn More
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="svc-card fade-up" style="transition-delay:0.18s">
+          <div class="svc-icon-wrap">
+            <!-- Bar chart icon -->
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+          </div>
+          <div class="svc-title">Energy Audit Services</div>
+          <p class="svc-body">Certified energy audits that identify consumption inefficiencies, improve power quality, and deliver measurable savings for industrial facilities.</p>
+          <a href="#" class="svc-read-more">
+            Learn More
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="svc-card fade-up" style="transition-delay:0.24s">
+          <div class="svc-icon-wrap">
+            <!-- Tool icon -->
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <div class="svc-title">AMC & Maintenance</div>
+          <p class="svc-body">Annual Maintenance Contracts that keep your electrical infrastructure in peak condition — planned preventive maintenance, 24/7 breakdown response.</p>
+          <a href="#" class="svc-read-more">
+            Learn More
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="svc-card fade-up" style="transition-delay:0.30s">
+          <div class="svc-icon-wrap">
+            <!-- File/drawing icon -->
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="svc-title">Engineering & Design</div>
+          <p class="svc-body">AutoCAD-based electrical engineering drawings, single-line diagrams, load calculations, and complete project documentation packages.</p>
+          <a href="#" class="svc-read-more">
+            Learn More
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div><!-- /.svc-grid -->
+    </div>
+  </div>
+
+  <!-- ═══ FEATURED SERVICES (alternating) ═══ -->
+  <div class="dark-section">
+    <!-- Feature 1 -->
+    <div class="svc-feature">
+      <div class="svc-feature-image">
+        <div class="img-placeholder" data-label="Turnkey Installation — Replace" style="height:100%; min-height:380px;"></div>
+      </div>
+      <div class="svc-feature-body">
+        <div class="section-eyebrow inv fade-up">Featured Service</div>
+        <h3 class="section-heading inv fade-up" style="font-size:clamp(26px,3vw,42px); transition-delay:0.06s">Turnkey<br>Project Delivery</h3>
+        <p class="section-body inv fade-up" style="transition-delay:0.12s">
+          Our turnkey model removes the complexity of multi-vendor coordination. JATSON acts as a single point of accountability — from design and procurement through installation, testing, commissioning, and documentation.
+        </p>
+        <ul style="margin-top:24px; padding:0; list-style:none;" class="fade-up" style="transition-delay:0.18s">
+          <li class="spec-row"><span class="spec-key">Scope</span><span class="spec-val">Design to Handover</span></li>
+          <li class="spec-row"><span class="spec-key">Voltage Range</span><span class="spec-val">LT / HT up to 33kV</span></li>
+          <li class="spec-row"><span class="spec-key">Standards</span><span class="spec-val">IS / IEC / IEEE</span></li>
+          <li class="spec-row"><span class="spec-key">Certification</span><span class="spec-val">CPRI Tested Equipment</span></li>
+        </ul>
+        <div class="mt-4 fade-up">
+          <a href="contact.html" class="brand-btn outline-inv">
+            <span>Enquire Now</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="svc-feature">
+      <div class="svc-feature-image">
+        <div class="img-placeholder" data-label="Energy Audit — Replace" style="height:100%; min-height:380px;"></div>
+      </div>
+      <div class="svc-feature-body">
+        <div class="section-eyebrow inv fade-up">Featured Service</div>
+        <h3 class="section-heading inv fade-up" style="font-size:clamp(26px,3vw,42px); transition-delay:0.06s">Energy<br>Audit Services</h3>
+        <p class="section-body inv fade-up" style="transition-delay:0.12s">
+          Our certified energy auditors conduct comprehensive surveys of your facility, analysing power quality, load patterns, and distribution efficiency. Deliverable: an actionable report with prioritised recommendations and projected ROI.
+        </p>
+        <ul style="margin-top:24px; padding:0; list-style:none;" class="fade-up" style="transition-delay:0.18s">
+          <li class="spec-row"><span class="spec-key">Audit Type</span><span class="spec-val">Detailed / Preliminary</span></li>
+          <li class="spec-row"><span class="spec-key">Compliance</span><span class="spec-val">BEE Guidelines</span></li>
+          <li class="spec-row"><span class="spec-key">Deliverable</span><span class="spec-val">Full Report + DPR</span></li>
+          <li class="spec-row"><span class="spec-key">Sectors</span><span class="spec-val">Industry / Commercial</span></li>
+        </ul>
+        <div class="mt-4 fade-up">
+          <a href="contact.html" class="brand-btn outline-inv">
+            <span>Enquire Now</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PROCESS STEPS ═══ -->
+  <div class="process-section section-padding">
+    <div class="container-fluid px-4 px-md-5">
+      <div class="row mb-5">
+        <div class="col-lg-6">
+          <div class="section-eyebrow fade-up">How We Work</div>
+          <h2 class="section-heading fade-up" style="transition-delay:0.06s">Our Process</h2>
+        </div>
+      </div>
+      <div class="process-grid fade-up" style="transition-delay:0.1s">
+        <div class="process-step">
+          <div class="process-step-num">01</div>
+          <div class="process-step-icon">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <div class="process-step-title">Site Assessment</div>
+          <p class="process-step-body">Our engineers conduct a thorough site survey to understand scope, constraints, and requirements before any design work begins.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">02</div>
+          <div class="process-step-icon">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="process-step-title">Engineering Design</div>
+          <p class="process-step-body">Detailed single-line diagrams, panel drawings, and load calculations are prepared and submitted for client approval.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">03</div>
+          <div class="process-step-icon">
+            <svg viewBox="0 0 24 24"><line x1="9" y1="18" x2="15" y2="18"/><line x1="12" y1="2" x2="12" y2="9"/><path d="M4.22 10.22a8 8 0 1 0 15.56 0"/></svg>
+          </div>
+          <div class="process-step-title">Installation & Testing</div>
+          <p class="process-step-body">Our certified installation teams execute work to safety standards. Rigorous testing protocols are followed before energisation.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">04</div>
+          <div class="process-step-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="process-step-title">Handover & Support</div>
+          <p class="process-step-body">Full documentation, as-built drawings, test certificates, and O&M manuals are handed over. Post-commissioning support available.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CTA BAND ═══ -->
+  <div class="svc-cta-band">
+    <div class="container-fluid px-4 px-md-5">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4">
+        <div>
+          <h2>Ready to Start<br>Your Project?</h2>
+          <p>Talk to our engineering team about your requirements.</p>
+        </div>
+        <div class="flex-shrink-0">
+          <a href="contact.html" class="brand-btn white">
+            <span>Contact Us Today</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/page.js"></script>
+  <script>
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.10 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
