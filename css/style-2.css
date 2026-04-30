@@ -2311,6 +2311,12 @@ input[type="file"] { display: none; }
    color:white !important;
 }
 
+.whatsapp-float a{
+   text-decoration:none !important;
+   color:white !important;
+   font-weight:600 !important; 
+}
+
 
 .whatsapp-float:hover {
   transform: scale(1.1);
