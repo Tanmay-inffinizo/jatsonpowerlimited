@@ -2298,7 +2298,7 @@ input[type="file"] { display: none; }
   position: fixed;
   bottom: 28px;
   left: 28px;
-  background: #25d366;
+  /* background: #25d366; */
   width: auto;
   height: 48px;
   border-radius: 50%;
@@ -2311,11 +2311,6 @@ input[type="file"] { display: none; }
    color:white !important;
 }
 
-.whatsapp-float a{
-   text-decoration:none !important;
-   color:white !important;
-   font-weight:600 !important; 
-}
 
 
 .whatsapp-float:hover {
