@@ -2298,16 +2298,16 @@ input[type="file"] { display: none; }
   position: fixed;
   bottom: 28px;
   left: 28px;
-  background: #25d366;
+  /* background: #25d366; */
   width: 48px;
   height: 48px;
-  border-radius: 50%;
+  /* border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   z-index: 9999;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease; */
 }
 
 
